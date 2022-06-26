@@ -7,13 +7,13 @@ const RegexDescription = {
             items: [
                 {
                     symbol: `[ character_group ]`,
-                    description: `Matches any single character in character_group. By default, the match is case-sensitive.`,
+                    description: `Matches any single character in <code>character_group</code>. By default, the match is case-sensitive.`,
                     pattern: `[ae]`,
                     matches: `"a" in "gray"`
                 },
                 {
                     symbol: `[^ character_group ]`,
-                    description: `Negation: Matches any single character that is not in character_group. By default, characters in character_group are case-sensitive.`,
+                    description: `Negation: Matches any single character that is not in <code>character_group</code>. By default, characters in <code>character_group</code> are case-sensitive.`,
                     pattern: `[^aei]`,
                     matches: `"r", "g", "n" in "reign"`
                 },
@@ -25,7 +25,7 @@ const RegexDescription = {
                 },
                 {
                     symbol: `.`,
-                    description: `Wildcard: Matches any single character except \\n.To match a literal period character (. or \\u002E), you must precede it with the escape character (\\.).`,
+                    description: `Wildcard: Matches any single character except <code>\\n</code>.To match a literal period character (<code>.</code> or <code>\\u002E</code>), you must precede it with the escape character (<code>\\.</code>).`,
                     pattern: `a.e`,
                     matches: `"ave" in "nave"`
                 },
@@ -79,7 +79,7 @@ const RegexDescription = {
                 },
                 {
                     symbol: `$`,
-                    description: `By default, the match must occur at the end of the string or before \\n at the end of the string; in multiline mode, it must occur before the end of the line or before \\n at the end of the line.`,
+                    description: `By default, the match must occur at the end of the string or before <code>\\n</code> at the end of the string; in multiline mode, it must occur before the end of the line or before <code>\\n</code> at the end of the line.`,
                     pattern: `-\\d{3}$`,
                     matches: `"-333" in "-901-333"`
                 },
@@ -91,7 +91,7 @@ const RegexDescription = {
                 },
                 {
                     symbol: `\\Z`,
-                    description: `The match must occur at the end of the string or before \\n at the end of the string.`,
+                    description: `The match must occur at the end of the string or before <code>\\n</code> at the end of the string.`,
                     pattern: `-\\d{3}\\Z`,
                     matches: `"-333" in "-901-333"`
                 },
@@ -109,13 +109,13 @@ const RegexDescription = {
                 },
                 {
                     symbol: `\\b`,
-                    description: `The match must occur on a boundary between a \\w (alphanumeric) and a \\W (nonalphanumeric) character.`,
+                    description: `The match must occur on a boundary between a <code>\\w</code> (alphanumeric) and a <code>\\W</code> (nonalphanumeric) character.`,
                     pattern: `\\b\\w+\\s\\w+\\b`,
                     matches: `"them theme", "them them" in "them theme them them"`
                 },
                 {
                     symbol: `\\B`,
-                    description: `The match must not occur on a \\b boundary.`,
+                    description: `The match must not occur on a <code>\\b</code> boundary.`,
                     pattern: `\\Bend\\w*\\b`,
                     matches: `"ends", "ender" in "end sends endure lender"`
                 },
@@ -127,73 +127,73 @@ const RegexDescription = {
             items: [
                 {
                     symbol: `*`,
-                    description: `Matches the previous element zero or more times.`,
+                    description: `Matches the previous element <code>zero</code> or <code>more</code> times.`,
                     pattern: `a.*c`,
                     matches: `"abcbc" in "abcbc"`
                 },
                 {
                     symbol: `+`,
-                    description: `Matches the previous element one or more times.`,
+                    description: `Matches the previous element <code>one</code> or <code>more</code> times.`,
                     pattern: `"be+"`,
                     matches: `"bee" in "been", "be" in "bent"`
                 },
                 {
                     symbol: `?`,
-                    description: `Matches the previous element zero or one time.`,
+                    description: `Matches the previous element <code>zero</code> or <code>one</code> time.`,
                     pattern: `"rai?"`,
                     matches: `"rai" in "rain"`
                 },
                 {
                     symbol: `{ n }`,
-                    description: `Matches the previous element exactly n times.`,
+                    description: `Matches the previous element exactly <code>n</code> times.`,
                     pattern: `",\\d{3}"`,
                     matches: `",043" in "1,043.6", ",876", ",543", and ",210" in "9,876,543,210"`
                 },
                 {
                     symbol: `{ n ,}`,
-                    description: `Matches the previous element at least n times.`,
+                    description: `Matches the previous element at least <code>n</code> times.`,
                     pattern: `"\\d{2,}"`,
                     matches: `"166", "29", "1930"`
                 },
                 {
                     symbol: `{ n , m }`,
-                    description: `Matches the previous element at least n times, but no more than m times.`,
+                    description: `Matches the previous element at least <code>n</code> times, but no more than <code>m</code> times.`,
                     pattern: `"\\d{3,5}"`,
                     matches: `"19302" in "193024"`
                 },
                 {
                     symbol: `*?`,
-                    description: `Matches the previous element zero or more times, but as few times as possible.`,
+                    description: `Matches the previous element <code>zero</code> or <code>more</code> times, but as few times as possible.`,
                     pattern: `a.*?c`,
                     matches: `"abc" in "abcbc"`
                 },
                 {
                     symbol: `+?`,
-                    description: `Matches the previous element one or more times, but as few times as possible.`,
+                    description: `Matches the previous element <code>one</code> or <code>more</code> times, but as few times as possible.`,
                     pattern: `"be+?"`,
                     matches: `"be" in "been", "be" in "bent"`
                 },
                 {
                     symbol: `??`,
-                    description: `Matches the previous element zero or one time, but as few times as possible.`,
+                    description: `Matches the previous element <code>zero</code> or <code>one</code> time, but as few times as possible.`,
                     pattern: `"rai??"`,
                     matches: `"ra" in "rain"`
                 },
                 {
                     symbol: `{ n }?`,
-                    description: `Matches the preceding element exactly n times.`,
+                    description: `Matches the preceding element exactly <code>n</code> times.`,
                     pattern: `",\\d{3}?"`,
                     matches: `",043" in "1,043.6", ",876", ",543", and ",210" in "9,876,543,210"`
                 },
                 {
                     symbol: `{ n ,}?`,
-                    description: `Matches the previous element at least n times, but as few times as possible.`,
+                    description: `Matches the previous element at least <code>n</code> times, but as few times as possible.`,
                     pattern: `"\\d{2,}?"`,
                     matches: `"166", "29", "1930"`
                 },
                 {
                     symbol: `{ n , m }?`,
-                    description: `Matches the previous element between n and m times, but as few times as possible.`,
+                    description: `Matches the previous element between <code>n</code> and <code>m</code> times, but as few times as possible.`,
                     pattern: `"\\d{3,5}?"`,
                     matches: `"193", "024" in "193024"`
                 },

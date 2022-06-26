@@ -37,7 +37,7 @@
     const direction = ref('rtl')
 </script>
 <style>
-    @import './assets/global.css';
+    @import '@assets/global.css';
 
     .el-menu {
         --el-menu-hover-bg-color: none;

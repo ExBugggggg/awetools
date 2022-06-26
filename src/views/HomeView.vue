@@ -36,20 +36,20 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import feather from 'feather-icons'
+    import { onMounted } from 'vue'
+    import { useRouter } from 'vue-router'
+    import feather from 'feather-icons'
 
-const router = useRouter()
-onMounted(() => {
-    feather.replace()
-})
+    const router = useRouter()
+    onMounted(() => {
+        feather.replace()
+    })
 
-const toJsonPage = () => {
-    router.push({ name: 'json' })
-}
+    const toJsonPage = () => {
+        router.push({ name: 'json' })
+    }
 
-const toRegexPage = () => {
-    router.push({ name: 'regex' })
-}
+    const toRegexPage = () => {
+        router.push({ name: 'regex' })
+    }
 </script>
