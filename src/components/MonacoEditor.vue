@@ -11,6 +11,7 @@
 <script setup>
     import * as monaco from 'monaco-editor'
     import { onMounted, ref, onBeforeMount } from 'vue'
+    import { UnicodeToChinese } from '@assets/common'
     import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
     import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker'
     import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker'
@@ -54,7 +55,7 @@
     const formatContent = () => {
         monacoEditor.trigger('', 'editor.action.formatDocument')
         let monacoContent = monacoEditor.getValue()
-        // console.log(monacoContent)
+        monacoContent = UnicodeToChinese(monacoContent)
         monacoEditor.setValue(monacoContent)
     }
 

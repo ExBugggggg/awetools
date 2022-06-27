@@ -205,9 +205,53 @@ const RegexDescription = {
 const RegexDemonstration = {
     items: [
         {
+            name: `Chinese`,
+            demonstration: `<code>[\\u4e00-\\u9fa5]{0,}</code>`
+        },
+        {
             name: ``,
-            demonstration: ``
-        }
+            demonstration: `<code></code>`
+        },
+        {
+            name: ``,
+            demonstration: `<code></code>`
+        },
+        {
+            name: ``,
+            demonstration: `<code></code>`
+        },
+        {
+            name: ``,
+            demonstration: `<code></code>`
+        },
+        {
+            name: ``,
+            demonstration: `<code></code>`
+        },
+        {
+            name: ``,
+            demonstration: `<code></code>`
+        },
+        {
+            name: ``,
+            demonstration: `<code></code>`
+        },
+        {
+            name: ``,
+            demonstration: `<code></code>`
+        },
+        {
+            name: ``,
+            demonstration: `<code></code>`
+        },
+        {
+            name: ``,
+            demonstration: `<code></code>`
+        },
+        {
+            name: ``,
+            demonstration: `<code></code>`
+        },
     ]
 }
 

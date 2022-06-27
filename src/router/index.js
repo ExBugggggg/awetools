@@ -7,15 +7,19 @@ const routes = [
     }, {
         path: '/home',
         name: 'home',
-        component: () => import('../views/HomeView.vue')
+        component: () => import('@views/HomeView.vue')
     }, {
         path: '/json',
         name: 'json',
-        component: () => import('../views/JsonView.vue')
+        component: () => import('@views/JsonView.vue')
     }, {
         path: '/regex',
         name: 'regex',
-        component: () => import('../views/RegexView.vue')
+        component: () => import('@views/RegexView.vue')
+    }, {
+        path: '/encode',
+        name: 'encode',
+        component: () => import('@views/EncodeView.vue')
     }
 ]
 
