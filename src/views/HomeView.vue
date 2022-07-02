@@ -3,7 +3,7 @@
         <el-col :span="16" :offset="4">
             <el-row :gutter="32">
                 <el-col :span="8">
-                    <el-card shadow="hover" @click="toJsonPage">
+                    <el-card shadow="hover" @click="redirectTo('json')">
                         <div style="padding: 3vh">
                             <el-row justify="center">
                                 <i data-feather="code"></i>
@@ -17,7 +17,7 @@
                     </el-card>
                 </el-col>
                 <el-col :span="8">
-                    <el-card shadow="hover" @click="toRegexPage">
+                    <el-card shadow="hover" @click="redirectTo('regex')">
                         <div style="padding: 3vh">
                             <el-row justify="center">
                                 <i data-feather="type"></i>
@@ -26,6 +26,20 @@
                         <div style="padding: 2vh">
                             <el-row justify="center">
                                 <span>Regex Validator</span>
+                            </el-row>
+                        </div>
+                    </el-card>
+                </el-col>
+                <el-col :span="8">
+                    <el-card shadow="hover" @click="redirectTo('framework')">
+                        <div style="padding: 3vh">
+                            <el-row justify="center">
+                                <i data-feather="book"></i>
+                            </el-row>
+                        </div>
+                        <div style="padding: 2vh">
+                            <el-row justify="center">
+                                <span>Framework Documentation</span>
                             </el-row>
                         </div>
                     </el-card>
@@ -45,11 +59,8 @@
         feather.replace()
     })
 
-    const toJsonPage = () => {
-        router.push({ name: 'json' })
+    const redirectTo = (pageName) => {
+        router.push({ name: pageName })
     }
 
-    const toRegexPage = () => {
-        router.push({ name: 'regex' })
-    }
 </script>

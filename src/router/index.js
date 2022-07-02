@@ -20,6 +20,10 @@ const routes = [
         path: '/encode',
         name: 'encode',
         component: () => import('@views/EncodeView.vue')
+    }, {
+        path: '/framework',
+        name: 'framework',
+        component: () => import('@views/FrameworkView.vue')
     }
 ]
 
