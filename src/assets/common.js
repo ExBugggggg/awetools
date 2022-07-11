@@ -2,6 +2,10 @@
 const RedirectTo = (url) => {
     window.location.href = url
 }
+// Open a new window
+const OpenWindow = (url) => {
+    window.open(url)
+}
 
 // Unicode convert to Chinese
 const UnicodeToChinese = (source) => {
@@ -28,5 +32,6 @@ const ChineseToASCII = (source) => {
 
 export { 
     RedirectTo,
+    OpenWindow,
     UnicodeToChinese
 }
