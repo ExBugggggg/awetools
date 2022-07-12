@@ -4,7 +4,7 @@
             <el-row :gutter="24" justify="end">
                 <el-input style="width: 240px" clearable v-model="searchContent" placeholder="@name:bootstrap"/>
                 <el-button type="primary" style="margin-left: 16px;" @click.prevent="searchDocuments">Search</el-button>
-                <el-button type="danger" style="margin-left: 8px;" :disabled="cancelDisabled">Cancel</el-button>
+                <el-button type="danger" style="margin-left: 8px;" :disabled="cancelDisabled" @click.prevent="cancelSearch">Cancel</el-button>
             </el-row>
         </el-col>
     </el-row>
@@ -32,10 +32,23 @@
                         </el-table>
                     </el-collapse-item>
                 </el-collapse>
-                <el-collapse v-else-if="useSearch === true">
-                    <el-collapse-item title="Search Result" style="font-weight: 1000">
+                <el-collapse v-else-if="useSearch === true" v-model="activeSearchCollapse">
+                    <el-collapse-item title="Search Result" style="font-weight: 1000" name="Search Result">
                         <el-table :data="resultOfDocuments" style="width: 100%">
-                            <el-table-column></el-table-column>
+                            <el-table-column label="Document Name">
+                                <template #default="scope">
+                                    <el-button link type="primary"
+                                        @click.prevent="openWindow(scope.row.url)">{{ scope.row.name }}
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="url" label="Offical URL">
+                                <template #default="scope">
+                                    <el-button link type="primary"
+                                        @click.prevent="openWindow(scope.row.url)">{{ scope.row.url }}
+                                    </el-button>
+                                </template>
+                            </el-table-column>
                         </el-table>
                     </el-collapse-item>
                 </el-collapse>
@@ -50,6 +63,7 @@ import { ElMessage } from 'element-plus'
 import docs from '@assets/documentation.json'
 
 const activeNormalCollapse = ref(['1'])
+const activeSearchCollapse = ref(['Search Result'])
 const documents = ref([])
 const resultOfDocuments = ref([])
 const searchContent = ref('')
@@ -58,17 +72,19 @@ const useSearch = ref(false)
 
 onMounted(() => {
     documents.value = docs.documentation
-    activeNormalCollapse.value = docs.documentation[0].name
+    activeNormalCollapse.value = activeAllCollapse()
 })
 
-const searchDocuments = () => {
-    if(!searchContent.value.includes(':')){
-        ElMessage({
-            message: `Invalid search parameter. You need add ':' character between search type and search keywords.`,
-            type: 'warning'
-        })
-        return
+const activeAllCollapse = () => {
+    let collapseName = []
+    for(let x of documents.value){
+        collapseName.push(x.name)
     }
+    return collapseName
+}
+
+const searchDocuments = () => {
+    
     if(!searchContent.value.startsWith('@')){
         ElMessage({
             message: `Invalid search parameter. You need start with '@' character.`,
@@ -76,6 +92,14 @@ const searchDocuments = () => {
         })
         return
     }
+    if(!searchContent.value.includes(':')){
+        ElMessage({
+            message: `Invalid search parameter. You need add ':' character between search type and search keywords.`,
+            type: 'warning'
+        })
+        return
+    }
+
     let splitCharacterIndex = searchContent.value.indexOf(':')
     let checkType = false
     switch(searchContent.value.slice(1, splitCharacterIndex)){
@@ -92,8 +116,43 @@ const searchDocuments = () => {
         })
         return
     }
-    // todo: finish fetch search keyword
-    console.log(searchContent.value.slice(1, splitCharacterIndex))
+    let searchKeyword = searchContent.value.slice(splitCharacterIndex + 1, )
+    resultOfDocuments.value = extractDocumentItems(searchKeyword)
+    switchDisplayContent()
+}
+
+const extractDocumentItems = (keyword) => {
+    let documentItems = []
+    for(let x in documents.value){
+        for(let y in documents.value[x]){
+            if(y === 'items'){
+                let items = documents.value[x][y]
+                for(let z in items){
+                    // turn to lowercase
+                    if((items[z].name.toLowerCase()).includes(keyword.toLowerCase())){
+                        documentItems.push(items[z])
+                    }
+                }
+            }
+        }
+    }
+    return documentItems
+}
+
+const cancelSearch = () => {
+    searchContent.value = ''
+    resultOfDocuments.value = []
+    switchDisplayContent()
+}
+
+const switchDisplayContent = () => {
+    if(resultOfDocuments.value.length !== 0){
+        useSearch.value = true
+        cancelDisabled.value = false
+    }else{
+        useSearch.value = false
+        cancelDisabled.value = true
+    }
 }
 
 const openWindow = (url) => {

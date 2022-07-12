@@ -148,7 +148,7 @@
 </template>
 <script setup>
     import { ref, watch, onMounted } from 'vue'
-    import { RegexDescription, RegexDemonstration } from '@assets/regex'
+    import { RegexDescription } from '@assets/regex'
     import { RedirectTo } from '@assets/common'
 
     const regexPattern = ref('[0-9]+')
@@ -173,7 +173,6 @@
     const quantifiers = RegexDescription.Regex.Quantifiers.items
     const quantifiersName = RegexDescription.Regex.Quantifiers.name
     const reference = RegexDescription.Reference
-    const regexDemo = RegexDemonstration.items
 
     const anchor = (id) => {
         let card = document.getElementById(id)

@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "name": "Documentation Setting",
+            "filename": "documentation.json"
+        },
+        {
+            "name": "Regex Demonstration",
+            "filename": "regexdemo.json"
+        }
+    ]
+}
