@@ -38,8 +38,8 @@
                             <el-table-column prop="name" label="Configuration Name"></el-table-column>
                             <el-table-column prop="filename" label="Operation">
                                 <template #default>
-                                    <el-button type="primary" size="small" @click.prevent="editConfiguration">Edit</el-button>
-                                    <el-button type="success" size="small" @click.prevent="exportConfiguration">Export</el-button>
+                                    <el-button type="primary" size="small" @click.prevent="editConfiguration" disabled>Edit</el-button>
+                                    <el-button type="success" size="small" @click.prevent="exportConfiguration" disabled>Export</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -84,6 +84,10 @@ const editConfiguration = () => {
 
 const exportConfiguration = () => {
 
+}
+
+const saveConfiguration = () => {
+    console.log('This function haven\'t been finished.')
 }
 </script>
 <style>

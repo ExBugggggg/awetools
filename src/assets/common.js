@@ -30,8 +30,16 @@ const ChineseToASCII = (source) => {
     })
 }
 
+// Chinese convert to Unicode
+const ChineseToUnicode = (source) => {
+    for(let c in source){
+        console.log(c)
+    }
+}
+
 export { 
     RedirectTo,
     OpenWindow,
-    UnicodeToChinese
+    UnicodeToChinese,
+    ChineseToUnicode
 }

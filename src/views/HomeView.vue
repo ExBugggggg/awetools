@@ -45,6 +45,36 @@
                     </el-card>
                 </el-col>
             </el-row>
+            <el-row :gutter="32" style="margin-top: 24px">
+                <el-col :span="8">
+                    <el-card shadow="hover" @click="redirectTo('encode')">
+                        <div style="padding: 3vh">
+                            <el-row justify="center">
+                                <i data-feather="repeat"></i>
+                            </el-row>
+                        </div>
+                        <div style="padding: 2vh">
+                            <el-row justify="center">
+                                <span>Encode & Decode</span>
+                            </el-row>
+                        </div>
+                    </el-card>
+                </el-col>
+                <el-col :span="8">
+                    <el-card shadow="hover" @click="redirectTo('encrpty')">
+                        <div style="padding: 3vh">
+                            <el-row justify="center">
+                                <i data-feather="key"></i>
+                            </el-row>
+                        </div>
+                        <div style="padding: 2vh">
+                            <el-row justify="center">
+                                <span>Encrypt & Decrypt</span>
+                            </el-row>
+                        </div>
+                    </el-card>
+                </el-col>
+            </el-row>
         </el-col>
     </el-row>
 </template>
