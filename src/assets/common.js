@@ -1,3 +1,9 @@
+/**
+ * This file just put some functions.
+ */
+
+import { Base64 } from 'js-base64'
+
 // Redirect to external url
 const RedirectTo = (url) => {
     window.location.href = url
@@ -15,7 +21,6 @@ const UnicodeToChinese = (source) => {
 }
 
 // Unicode convert to ASCII
-// @todo, unknow this function
 const UnicodeToASCII = (source) => {
     return source.replace(/(&#x)(\w{1,4});/gi, ($0) => {
         return (String.fromCharCode(parseInt((encodeURIComponent($0).repalce(/(%26%23x)(\w{1,4})(%3B)/g,"$2")), 16)))
@@ -23,8 +28,7 @@ const UnicodeToASCII = (source) => {
 }
 
 // ASCII convert to Chinese
-// @todo, unknow this function
-const ChineseToASCII = (source) => {
+const ASCIIToChinese = (source) => {
     return source.replace(/(&#)(\d{1,6});/gi, ($0) => {
         return (String.fromCharCode(parseInt((encodeURIComponent($0).replace(/(%26%23)(\d{1,6})(%3B)/g, "$2")))))
     })
@@ -32,14 +36,30 @@ const ChineseToASCII = (source) => {
 
 // Chinese convert to Unicode
 const ChineseToUnicode = (source) => {
-    for(let c in source){
-        console.log(c)
+    let unicodeString = ''
+    for(let character of source){
+        if(/[\u4e00-\u9fa5]/.test(character)){
+            unicodeString += '\\u' + character.charCodeAt(0).toString(16)
+        }else{
+            unicodeString += character
+        }
     }
+    return unicodeString
+}
+
+// Base64 Encode
+const Base64Encode = (source) => {
+    return Base64.encode(source)
+}
+// Base64 Decode
+const Base64Decode = (source) => {
+    return Base64.decode(source)
 }
 
 export { 
     RedirectTo,
     OpenWindow,
     UnicodeToChinese,
-    ChineseToUnicode
+    ChineseToUnicode,
+    Base64Encode
 }

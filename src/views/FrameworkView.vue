@@ -164,4 +164,8 @@ const openWindow = (url) => {
     font-size: large;
     font-weight: 1000 !important;
 }
+
+::v-deep(input) {
+    font-family: Menlo, Monaco, Consolas, Andale Mono, lucida console, Courier New, monospace;
+}
 </style>

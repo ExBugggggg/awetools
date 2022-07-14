@@ -61,7 +61,7 @@
                     </el-card>
                 </el-col>
                 <el-col :span="8">
-                    <el-card shadow="hover" @click="redirectTo('encrpty')">
+                    <el-card shadow="hover" @click="redirectTo('encrypt')">
                         <div style="padding: 3vh">
                             <el-row justify="center">
                                 <i data-feather="key"></i>

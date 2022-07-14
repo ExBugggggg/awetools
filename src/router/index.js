@@ -24,6 +24,10 @@ const routes = [
         path: '/framework',
         name: 'framework',
         component: () => import('@views/FrameworkView.vue')
+    }, {
+        path: '/encrypt',
+        name: 'encrypt',
+        component: () => import('@views/EncryptView.vue')
     }
 ]
 

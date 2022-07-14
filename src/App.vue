@@ -3,20 +3,20 @@
         <el-container>
             <el-header style="padding: 0px">
                 <el-menu class="el-menu-demo" mode="horizontal" text-color="#2F4F4F" active-text-color="#2F4F4F">
-                    <el-menu-item index="1">
-                        <h2><a href="#" style="text-decoration: none;">Awesome Tools For Programmer</a></h2>
+                    <el-menu-item index="1" @click="RedirectTo('#')">
+                        <h2><a style="text-decoration: none;">Awesome Tools For Programmer</a></h2>
                     </el-menu-item>
                     <el-menu-item index="2" style="margin-right: 8px; margin-left: auto; font-weight: bold;"
-                        @click="recentUsing = true">Recent Using</el-menu-item>
+                        @click="quickAccess = true">Quick Access</el-menu-item>
                     <el-menu-item index="3" style="margin-right: 0px; font-weight: bold;" @click="setting = true">
                         Settings</el-menu-item>
                 </el-menu>
             </el-header>
             <el-main>
                 <router-view />
-                <el-drawer v-model="recentUsing" :direction="direction">
+                <el-drawer v-model="quickAccess" :direction="direction">
                     <template #header>
-                        <h4>Recent Using</h4>
+                        <h4>Quick Access</h4>
                     </template>
                     <template #default>
                         <div>
@@ -65,13 +65,18 @@
 </template>
 <script setup>
 import { onMounted, ref } from 'vue'
+import { RedirectTo } from './assets/common';
 import configuration from '@assets/configuration.json'
 
-const recentUsing = ref(false)
+const quickAccess = ref(false)
 const setting = ref(false)
 const direction = ref('rtl')
 const configurationItems = ref([])
 const editConfigurationDialogVisible = ref(false)
+
+const redirectTo = (url) => {
+    RedirectTo(url)
+}
 
 onMounted(() => {
     configurationItems.value = configuration.configurations

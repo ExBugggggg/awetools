@@ -16,7 +16,9 @@
                     <template #append>
                         <el-select v-model="modifiersIndex" @change="regex">
                             <el-option v-for="modifier in modifiersMap" :key="modifier.value"
-                                :label="'/' + modifier.key" :value="modifier.value"></el-option>
+                                :label="'/' + modifier.key" :value="modifier.value"
+                                style="font-family: Menlo, Monaco, Consolas, Andale Mono, lucida console, Courier New, monospace;">
+                            </el-option>
                         </el-select>
                     </template>
                 </el-input>
@@ -147,117 +149,130 @@
     </el-row>
 </template>
 <script setup>
-    import { ref, watch, onMounted } from 'vue'
-    import { RegexDescription } from '@assets/regex'
-    import { RedirectTo } from '@assets/common'
+import { ref, watch, onMounted } from 'vue'
+import { RegexDescription } from '@assets/regex'
+import { RedirectTo } from '@assets/common'
 
-    const regexPattern = ref('[0-9]+')
-    const sourceString = ref('Address: 119.014232E, 25.45996W Email: HelloWorld@hw.com')
-    const resultString = ref('No Match Content')
-    const modifiersMap = [
-        { key: 'g', value: 0 },
-        { key: 'i', value: 1 },
-        { key: 'm', value: 2 },
-        { key: 's', value: 3 }
-    ]
+const regexPattern = ref('[0-9]+')
+const sourceString = ref('Address: 119.014232E, 25.45996W Email: HelloWorld@hw.com')
+const resultString = ref('No Match Content')
+const modifiersMap = [
+    { key: 'g', value: 0 },
+    { key: 'i', value: 1 },
+    { key: 'm', value: 2 },
+    { key: 's', value: 3 },
+    { key: 'gi', value: 4 }
+]
 
-    const modifiersIndex = ref(0)
-    const regexTutorial = ref(false)
-    const direction = ref('rtl')
-    const scrollbar = ref(0)
-    const drawerSize = ref('40%')
-    const characterClasses = RegexDescription.Regex.CharacterClasses.items
-    const characterName = RegexDescription.Regex.CharacterClasses.name
-    const anchors = RegexDescription.Regex.Anchors.items
-    const anchorsName = RegexDescription.Regex.Anchors.name
-    const quantifiers = RegexDescription.Regex.Quantifiers.items
-    const quantifiersName = RegexDescription.Regex.Quantifiers.name
-    const reference = RegexDescription.Reference
+const modifiersIndex = ref(0)
+const regexTutorial = ref(false)
+const direction = ref('rtl')
+const scrollbar = ref(0)
+const drawerSize = ref('40%')
+const characterClasses = RegexDescription.Regex.CharacterClasses.items
+const characterName = RegexDescription.Regex.CharacterClasses.name
+const anchors = RegexDescription.Regex.Anchors.items
+const anchorsName = RegexDescription.Regex.Anchors.name
+const quantifiers = RegexDescription.Regex.Quantifiers.items
+const quantifiersName = RegexDescription.Regex.Quantifiers.name
+const reference = RegexDescription.Reference
 
-    const anchor = (id) => {
-        let card = document.getElementById(id)
-        scrollbar.value.setScrollTop(card.offsetTop)
-    }
+const anchor = (id) => {
+    let card = document.getElementById(id)
+    scrollbar.value.setScrollTop(card.offsetTop)
+}
 
-    const top = () => {
-        scrollbar.value.setScrollTop(0)
-    }
+const top = () => {
+    scrollbar.value.setScrollTop(0)
+}
 
-    watch([regexPattern, sourceString], ([regexPattern_nv, sourceString_nv], [regexPattern_ov, sourceString_ov]) => {
-        regex()
-    })
+watch([regexPattern, sourceString], ([regexPattern_nv, sourceString_nv], [regexPattern_ov, sourceString_ov]) => {
+    regex()
+})
 
-    const redirectTo = () => {
-        RedirectTo(reference)
-    }
+const redirectTo = () => {
+    RedirectTo(reference)
+}
 
-    const previewDescription = (text) => {
-        return text
-    }
+const previewDescription = (text) => {
+    return text
+}
 
-    const regex = () => {
-        resultString.value = ''
-        let modifiersString = modifiersMap[modifiersIndex.value].key
-        let circleTimes = [...sourceString.value].length;
-        let matchTimes = 0;
-        try {
-            if (regexPattern.value === '') {
-                if (matchTimes === 0) {
-                    resultString.value = `Match Times: ${matchTimes}`
-                }
-                resultString.value = ''
-                return
+const regex = () => {
+    resultString.value = ''
+    let modifiersString = modifiersMap[modifiersIndex.value].key
+    let circleTimes = [...sourceString.value].length;
+    let matchTimes = 0;
+    try {
+        if (regexPattern.value === '') {
+            if (matchTimes === 0) {
+                resultString.value = `Match Times: ${matchTimes}`
             }
-            let reg = new RegExp(regexPattern.value, modifiersString)
             resultString.value = ''
-            let resultArray = [];
-            let matchContent = '';
-            while ((resultArray = reg.exec(sourceString.value)) !== null) {
-                matchTimes += 1
-                if (matchTimes > circleTimes) {
-                    break
-                }
-                matchContent += resultArray[0] + '\n'
-            }
-            resultString.value += `Match Times: ${matchTimes}\n`
-            if (matchContent === '') {
-                resultString.value += 'No Match Content'
-            } else {
-                resultString.value += matchContent
-            }
-        } catch (e) {
-            if (e instanceof SyntaxError) {
-                resultString.value = e.message
-            }
+            return
+        }
+        let reg = new RegExp(regexPattern.value, modifiersString)
+        resultString.value = ''
+        let resultArray = [];
+        let matchContent = '';
+        if (modifiersString !== 'g' && modifiersString !== 'gi') {
+            circleTimes = 1
+        }
+        while ((resultArray = reg.exec(sourceString.value)) !== null && (matchTimes < circleTimes)) {
+            matchTimes += 1
+            matchContent += resultArray[0] + '\n'
+        }
+        resultString.value += `Match Times: ${matchTimes}\n`
+        if (matchContent === '') {
+            resultString.value += 'No Match Content'
+        } else {
+            resultString.value += matchContent
+        }
+    } catch (e) {
+        if (e instanceof SyntaxError) {
+            resultString.value = e.message
         }
     }
+}
 
-    onMounted(() => {
-        regex()
-    })
+onMounted(() => {
+    regex()
+})
 
 </script>
 <style scoped>
-    @import '@assets/code-preview.css';
+@import '@assets/code-preview.css';
 
-    .el-card.is-always-shadow {
-        box-shadow: none
-    }
+.el-card.is-always-shadow {
+    box-shadow: none
+}
 
-    .el-card {
-        --el-card-border-color: none
-    }
+.el-card {
+    --el-card-border-color: none
+}
 
-    input {
-        font-weight: bolder;
-    }
+input {
+    font-weight: bolder;
+}
 
-    ::v-deep(code) {
-        margin: 0 2px;
-        padding: 3px 4px;
-        border-radius: 3px;
-        font-size: 0.9em;
-        background-color: #f6f6f6;
-        font-family: Menlo, Monaco, Consolas, Andale Mono, lucida console, Courier New, monospace;
-    }
+::v-deep(code) {
+    margin: 0 2px;
+    padding: 3px 4px;
+    border-radius: 3px;
+    font-size: 0.9em;
+    background-color: #f6f6f6;
+    font-family: Menlo, Monaco, Consolas, Andale Mono, lucida console, Courier New, monospace;
+}
+
+::v-deep(input) {
+    font-family: Menlo, Monaco, Consolas, Andale Mono, lucida console, Courier New, monospace;
+}
+
+::v-deep(textarea) {
+    font-family: Menlo, Monaco, Consolas, Andale Mono, lucida console, Courier New, monospace;
+}
+
+::v-deep(ul) {
+    font-family: Menlo, Monaco, Consolas, Andale Mono, lucida console, Courier New, monospace;
+}
 </style>
