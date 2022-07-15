@@ -14,6 +14,7 @@
         </el-col>
 
     </el-row>
+    
     <el-row :gutter="24" style="margin-top: 24px">
         <el-col :span="14" :offset="5">
             <el-row :gutter="24" justify="start">

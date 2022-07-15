@@ -56,10 +56,20 @@ const Base64Decode = (source) => {
     return Base64.decode(source)
 }
 
+const InArray = (element, searchArray) => {
+    for(let i of searchArray){
+        if(element === i){
+            return true
+        }
+    }
+    return false
+}
+
 export { 
     RedirectTo,
     OpenWindow,
     UnicodeToChinese,
     ChineseToUnicode,
-    Base64Encode
+    Base64Encode,
+    InArray
 }
