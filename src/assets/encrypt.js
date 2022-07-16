@@ -15,7 +15,10 @@ import {
     AES,
     TripleDES,
     Rabbit,
-    RC4
+    RC4,
+    mode,
+    pad,
+    enc
 } from "crypto-js"
 
 import {
@@ -28,6 +31,14 @@ import {
     sha3_384,
     sha3_512
 } from "js-sha3"
+
+// Code convert
+const ConvertToHex = (message) => {
+    return enc.Hex.stringify(message)
+}
+const ConvertToBase64 = (message) => {
+    return enc.Base64.stringify(message)
+}
 
 // message-digest algorithm method
 const EncryptMD5 = (message) => {
@@ -66,7 +77,6 @@ const EncryptSHA512 = (message) => {
 const EncryptHmacSHA512 = (message, secret) => {
     return HmacSHA512(message, secret)
 }
-
 const EncryptSHA3 = (message, output) => {
     if(output === 224){
         return sha3_224(message)
@@ -81,7 +91,6 @@ const EncryptSHA3 = (message, output) => {
 const EncryptHmacSHA3 = (message, secret) => {
     return HmacSHA3(message, secret)
 }
-
 const EncryptKeccak = (message, output) => {
     if(output === 224){
         return keccak_224(message)
@@ -94,13 +103,41 @@ const EncryptKeccak = (message, output) => {
     }
 }
 
-const EncryptAES = (message, secret) => {
-    return AES.encrypt(message, secret)
+const EncryptAES = (message, secret, config) => {
+    let encryptAES = AES.encrypt(message, enc.Utf8.parse(secret), {
+        iv: enc.Utf8.parse(config.iv),
+        padding: config.padding,
+        mode: config.mode
+    })
+    return encryptAES
+}
+const DecryptAES = (encrypted, secret, config) => {
+    let decryptAES = AES.decrypt(encrypted, enc.Utf8.parse(secret), {
+        iv: enc.Utf8.parse(config.iv),
+        padding: config.padding,
+        mode: config.mode
+    })
+    return decryptAES.toString(enc.Utf8)
 }
 
-const DecryptAES = (encrypted, secret) => {
-    return AES.decrypt(encrypted, secret)
+const EncryptTripleDES = (message, secret, config) => {
+    let encryptTripleDES = TripleDES.encrypt(message, enc.Utf8.parse(secret), {
+        iv: enc.Utf8.parse(config.iv),
+        padding: config.padding,
+        mode: config.mode
+    })
+    return encryptTripleDES
 }
+
+const DecryptTripleDES = (encrypted, secret, config) => {
+    let encryptTripleDES = TripleDES.decrypt(encrypted, enc.Utf8.parse(secret), {
+        iv: enc.Utf8.parse(config.iv),
+        padding: config.padding,
+        mode: config.mode
+    })
+    return encryptTripleDES.toString(enc.Utf8)
+}
+
 
 const EncryptMethods = [
     {
@@ -182,52 +219,65 @@ const OutputOptions = [
     }
 ]
 
-const AESEncryptMode = [
+// encrypt mode
+const EncryptMode = [
     {
         value: 'CBC',
+        object: mode.CBC,
         label: 'CBC'
     },
     {
         value: 'CFB',
+        object: mode.CFB,
         label: 'CFB'
     },
     {
         value: 'CTR',
+        object: mode.CTR,
         label: 'CTR'
     },
     {
         value: 'OFB',
+        object: mode.OFB,
         label: 'OFB'
     },
     {
         value: 'ECB',
+        object: mode.ECB,
         label: 'ECB'
     }
 ]
 
-const AESEncryptPadding = [
+// encrypt padding
+const EncryptPadding = [
     {
         value: 'Pkcs7',
+        object: pad.Pkcs7,
         label: 'Pkcs7'
     },
     {
         value: 'Iso97971',
+        object: pad.Iso97971,
         label: 'Iso97971'
     },
     {
         value: 'AnsiX923',
+        object: pad.AnsiX923,
         label: 'AnsiX923'
     },
     {
         value: 'Iso10126',
+        object: pad.Iso10126,
         label: 'Iso10126'
     },
     {
         value: 'ZeroPadding',
+        object: pad.ZeroPadding,
         label: 'ZeroPadding'
     },
     {
         value: 'NoPadding',
+        object: pad.NoPadding,
         label: 'NoPadding'
     }
 ]
@@ -249,9 +299,13 @@ export {
     EncryptHmacSHA3,
     EncryptAES,
     DecryptAES,
+    EncryptTripleDES,
+    DecryptTripleDES,
     EncryptKeccak,
     EncryptMethods,
     OutputOptions,
-    AESEncryptMode,
-    AESEncryptPadding
+    EncryptMode,
+    EncryptPadding,
+    ConvertToBase64,
+    ConvertToHex
 }
