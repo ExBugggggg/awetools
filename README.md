@@ -9,7 +9,7 @@ Development Environment: node(14.19.1) npm(6.14.16)
 
 #### How to build this project?
 
-1. Run command `npm run build`.
+1. Run command `npm run build`. Then you can run `npm run preview` command to run it and preview.
 
 #### How to add new framework documentations?
 
