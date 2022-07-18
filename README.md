@@ -14,7 +14,8 @@ Development Environment: node(14.19.1) npm(6.14.16)
 #### How to add new framework documentations?
 
 1. Open 'awetools/src/documentation.json'
-2. ```JSON
+2. 
+```JSON
 {
     "name": "Demo",
     "keyword": ["demo"],
@@ -24,7 +25,8 @@ Development Environment: node(14.19.1) npm(6.14.16)
             "url": "documentation url"
         }
     ]
-}   ```
+}
+```
 
 #### Dependencies
 
