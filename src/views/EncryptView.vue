@@ -41,7 +41,7 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item label="Display Mode" style="min-width: 212px">
-                            <el-radio-group v-model="encryptOptions.displayMode">
+                            <el-radio-group v-model="encryptOptions.displayMode" :disabled="displayModeDisabled">
                                 <el-radio :label="0">Hex</el-radio>
                                 <el-radio :label="1">Base64</el-radio>
                             </el-radio-group>
@@ -51,17 +51,12 @@
                 <el-col :span="12">
                     <el-form label-position="top" :model="encryptOptions">
                         <el-form-item label="Initialization Vector">
-                            <el-input v-model="encryptOptions.iv" :disabled="ivDisabled"
-                                placeholder="iv (support 16 Bytes)"></el-input>
+                            <el-input v-model="encryptOptions.iv" :disabled="ivDisabled" placeholder="iv (16 Bytes)">
+                            </el-input>
                         </el-form-item>
-                        <el-form-item label="Public Key/Secret/Salt">
-                            <el-input type="textarea" :rows="5"
-                                placeholder="Public Key/Secret/Salt(support 16/24/32 Bytes)"
+                        <el-form-item label="Secret/Salt">
+                            <el-input type="textarea" :rows="5" placeholder="Secret/Salt (16/24/32 Bytes)"
                                 v-model="encryptOptions.secret" :disabled="secretDisabled"></el-input>
-                        </el-form-item>
-                        <el-form-item label="Private Key">
-                            <el-input type="textarea" :rows="5" placeholder="Private Key"
-                                v-model="encryptOptions.privateSecret" :disabled="privateSecretDisabled"></el-input>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click.prevent="encrypt">Encrypt
@@ -124,11 +119,14 @@ import {
     DecryptAES,
     EncryptTripleDES,
     DecryptTripleDES,
+    EncryptRabbit,
+    DecryptRabbit,
+    EncryptRC4,
+    DecryptRC4,
     EncryptHmacSHA3,
     EncryptKeccak,
     ConvertToBase64
 } from '@assets/encrypt'
-import { breakpointsTailwind } from '@vueuse/core';
 
 const encryptMethods = ref([])
 const sourceString = ref('')
@@ -138,7 +136,6 @@ const encryptOptions = ref({
     encryptMethod: 'MD5',
     outputOption: 512,
     secret: '',
-    privateSecret: '',
     encryptMode: 'CBC',
     encryptPadding: 'Pkcs7',
     iv: '',
@@ -153,13 +150,9 @@ const outputOptions = ref([])
 const outputDisabled = ref(true)
 
 const secretDisabled = ref(true)
-const privateSecretDisabled = ref(true)
 const decryptDisabled = ref(true)
 const ivDisabled = ref(true)
-
-const padChange = () => {
-
-}
+const displayModeDisabled = ref(false)
 
 const encryptOptionChange = () => {
     let encryptMethod = encryptOptions.value.encryptMethod
@@ -178,22 +171,28 @@ const encryptOptionChange = () => {
         modeAndPaddingDisabled.value = true
     }
     // secret disabled
-    if (encryptMethod.startsWith('Hmac') || InArray(encryptMethod, ['AES', '3DES'])) {
+    if (encryptMethod.startsWith('Hmac') || InArray(encryptMethod, ['AES', '3DES', 'Rabbit', 'RC4'])) {
         secretDisabled.value = false
     } else {
         secretDisabled.value = true
     }
     // decrypt button disabled
-    if (InArray(encryptMethod, ['AES', '3DES'])) {
+    if (InArray(encryptMethod, ['AES', '3DES', 'Rabbit', 'RC4'])) {
         decryptDisabled.value = false
     } else {
         decryptDisabled.value = true
     }
     // iv disabled
-    if (InArray(encryptMethod, ['AES', '3DES']) && encryptOptions.value.encryptMode !== 'ECB') {
+    if (InArray(encryptMethod, ['AES', '3DES', 'Rabbit', 'RC4']) && encryptOptions.value.encryptMode !== 'ECB') {
         ivDisabled.value = false
     } else {
         ivDisabled.value = true
+    }
+    // display mode disabled
+    if (InArray(encryptMethod, ['AES', '3DES', 'Rabbit', 'RC4'])) {
+        displayModeDisabled.value = true
+    } else {
+        displayModeDisabled.value = false
     }
 }
 
@@ -263,11 +262,19 @@ const encrypt = () => {
             break
         case 'AES':
             let aesEncryptResult = EncryptAES(encryptMessage, secret, config)
-            resultString.value = `${aesEncryptResult}\n\nkey:${aesEncryptResult.key}\niv:${aesEncryptResult.iv}\nsalt:${encryptResult.salt}\nciphertext:${aesEncryptResult.ciphertext}`
+            resultString.value = `${aesEncryptResult}\n\nkey:${aesEncryptResult.key}\niv:${aesEncryptResult.iv}\nsalt:${aesEncryptResult.salt}\nciphertext:${aesEncryptResult.ciphertext}`
             break
         case '3DES':
             let tripleDesEncryptResult = EncryptTripleDES(encryptMessage, secret, config)
             resultString.value = `${tripleDesEncryptResult}\n\nkey:${tripleDesEncryptResult.key}\niv:${tripleDesEncryptResult.iv}\nsalt:${tripleDesEncryptResult.salt}\nciphertext:${tripleDesEncryptResult.ciphertext}`
+            break
+        case 'Rabbit':
+            let rabbitEncryptResult = EncryptRabbit(encryptMessage, secret, config)
+            resultString.value = `${rabbitEncryptResult}\n\nkey:${rabbitEncryptResult.key}\niv:${rabbitEncryptResult.iv}\nsalt:${rabbitEncryptResult.salt}\nciphertext:${rabbitEncryptResult.ciphertext}`
+            break
+        case 'RC4':
+            let rc4EncryptResult = EncryptRC4(encryptMessage, secret, config)
+            resultString.value = `${rc4EncryptResult}\n\nkey:${rc4EncryptResult.key}\niv:${rc4EncryptResult.iv}\nsalt:${rc4EncryptResult.salt}\nciphertext:${rc4EncryptResult.ciphertext}`
             break
         default:
             ElMessage.error(`No encrypt method: ${encryptMethod}`)
@@ -295,25 +302,39 @@ const decrypt = () => {
         return
     }
     let decryptMessage = sourceString.value
-    if(!decryptMessage){
+    if (!decryptMessage) {
         ElMessage.error(`No message need to decrypt`)
         return
     }
     switch (encryptMethod) {
         case 'AES':
-            try{
+            try {
                 resultString.value = DecryptAES(decryptMessage, secret, config)
-            }catch(e){
+            } catch (e) {
                 resultString.value = `Decrypt just allow Base64 string. Don't use Hex string.`
             }
             break
         case '3DES':
-            try{
+            try {
                 resultString.value = DecryptTripleDES(decryptMessage, secret, config)
-            }catch(e){
+            } catch (e) {
                 resultString.value = `Decrypt just allow Base64 string. Don't use Hex string.`
             }
-            break    
+            break
+        case 'Rabbit':
+            try {
+                resultString.value = DecryptRabbit(decryptMessage, secret, config)
+            } catch (e) {
+                resultString.value = `Decrypt just allow Base64 string. Don't use Hex string.`
+            }
+            break
+        case 'RC4':
+            try {
+                resultString.value = DecryptRC4(decryptMessage, secret, config)
+            } catch (e) {
+                resultString.value = `Decrypt just allow Base64 string. Don't use Hex string.`
+            }
+            break
         default:
             ElMessage.error(`No encrypt method: ${encryptMethod}`)
             return

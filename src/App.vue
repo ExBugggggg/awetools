@@ -8,7 +8,9 @@
                     </el-menu-item>
                     <el-menu-item index="2" style="margin-right: 8px; margin-left: auto; font-weight: bold;"
                         @click="quickAccess = true">Quick Access</el-menu-item>
-                    <el-menu-item index="3" style="margin-right: 0px; font-weight: bold;" @click="setting = true">
+                    <el-menu-item index="3" style="margin-right: 0px; font-weight: bold;" @click="helpManual = true">
+                        Manual & Help</el-menu-item>
+                    <el-menu-item index="4" style="margin-right: 0px; font-weight: bold;" @click="setting = true">
                         Settings</el-menu-item>
                 </el-menu>
             </el-header>
@@ -34,23 +36,11 @@
                         <h4>Awesome-Tools Setting</h4>
                     </template>
                     <template #default>
-                        <el-table :data="configurationItems">
-                            <el-table-column prop="name" label="Configuration Name"></el-table-column>
-                            <el-table-column prop="filename" label="Operation">
-                                <template #default>
-                                    <el-button type="primary" size="small" @click.prevent="editConfiguration" disabled>Edit</el-button>
-                                    <el-button type="success" size="small" @click.prevent="exportConfiguration" disabled>Export</el-button>
-                                </template>
-                            </el-table-column>
-                        </el-table>
+                        <el-empty description="This function will be released in the future." :image-size="200"/>
                     </template>
                     <template #footer>
-                        <div style="flex: auto">
-                            <el-button>Clear History</el-button>
-                        </div>
                     </template>
                 </el-drawer>
-
                 <el-dialog v-model="editConfigurationDialogVisible" title="Edit" width="60%">
                     <template #footer>
                         <span class="dialog-footer">
@@ -60,6 +50,9 @@
                     </template>
                 </el-dialog>
             </el-main>
+            <el-footer style="padding: 0px">
+                
+            </el-footer>
         </el-container>
     </div>
 </template>

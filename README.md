@@ -1,7 +1,44 @@
-# Vue 3 + Vite
+# Awesome Tools For Programmer
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Development Environment: node(14.19.1) npm(6.14.16)
 
-## Recommended IDE Setup
+#### How to use it on your computer?
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+1. clone this project, use command `git clone https://github.com/ExBugggggg/awetools.git`
+2. Then, run command `cd awetools` and install this project use `npm install`
+
+#### How to build this project?
+
+1. Run command `npm run build`.
+
+#### How to add new framework documentations?
+
+1. Open 'awetools/src/documentation.json'
+2. ```JSON
+    {
+            "name": "Demo",
+            "keyword": ["demo"],
+            "items": [
+                {
+                    "name":  "documentation name",
+                    "url": "documentation url"
+                }
+            ]
+        }
+  ```
+
+#### Dependencies
+
+1. "crypto-js": "^4.1.1",
+2. "element-plus": "^2.2.2",
+3. "feather-icons": "^4.29.0",
+4. "js-base64": "^3.7.2",
+5. "js-sha3": "^0.8.0",
+6. "monaco-editor": "^0.33.0",
+7. "prismjs": "^1.28.0",
+8. "vue": "^3.2.25",
+9. "vue-router": "^4.0.15"
+
+#### License
+
+1. Released under a MIT license. See [MIT License](https://mit-license.org) for details.

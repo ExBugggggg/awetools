@@ -69,7 +69,7 @@
                         </div>
                         <div style="padding: 2vh">
                             <el-row justify="center">
-                                <span>Encrypt & Decrypt</span>
+                                <span>Hash & Symmetrical Encryption</span>
                             </el-row>
                         </div>
                     </el-card>
@@ -94,3 +94,10 @@ const redirectTo = (pageName) => {
 }
 
 </script>
+<style scoped>
+span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+</style>

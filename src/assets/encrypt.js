@@ -22,9 +22,9 @@ import {
 } from "crypto-js"
 
 import {
-    keccak_224, 
-    keccak_256, 
-    keccak_384, 
+    keccak_224,
+    keccak_256,
+    keccak_384,
     keccak_512,
     sha3_224,
     sha3_256,
@@ -78,13 +78,13 @@ const EncryptHmacSHA512 = (message, secret) => {
     return HmacSHA512(message, secret)
 }
 const EncryptSHA3 = (message, output) => {
-    if(output === 224){
+    if (output === 224) {
         return sha3_224(message)
-    }else if(output === 256){
+    } else if (output === 256) {
         return sha3_256(message)
-    }else if(output === 384){
+    } else if (output === 384) {
         return sha3_384(message)
-    }else{
+    } else {
         return sha3_512(message)
     }
 }
@@ -92,17 +92,18 @@ const EncryptHmacSHA3 = (message, secret) => {
     return HmacSHA3(message, secret)
 }
 const EncryptKeccak = (message, output) => {
-    if(output === 224){
+    if (output === 224) {
         return keccak_224(message)
-    }else if(output === 256){
+    } else if (output === 256) {
         return keccak_256(message)
-    }else if(output === 384){
+    } else if (output === 384) {
         return keccak_384(message)
-    }else{
+    } else {
         return keccak_512(message)
     }
 }
 
+// Just support utf-8
 const EncryptAES = (message, secret, config) => {
     let encryptAES = AES.encrypt(message, enc.Utf8.parse(secret), {
         iv: enc.Utf8.parse(config.iv),
@@ -130,14 +131,41 @@ const EncryptTripleDES = (message, secret, config) => {
 }
 
 const DecryptTripleDES = (encrypted, secret, config) => {
-    let encryptTripleDES = TripleDES.decrypt(encrypted, enc.Utf8.parse(secret), {
+    let decryptTripleDES = TripleDES.decrypt(encrypted, enc.Utf8.parse(secret), {
         iv: enc.Utf8.parse(config.iv),
         padding: config.padding,
         mode: config.mode
     })
-    return encryptTripleDES.toString(enc.Utf8)
+    return decryptTripleDES.toString(enc.Utf8)
 }
 
+const EncryptRabbit = (message, secret, config) => {
+    let encryptRabbit = Rabbit.encrypt(message, enc.Utf8.parse(secret), {
+        iv: enc.Utf8.parse(config.iv)
+    })
+    return encryptRabbit
+}
+
+const DecryptRabbit = (encrypted, secret, config) => {
+    let decryptRabbit = Rabbit.decrypt(encrypted, enc.Utf8.parse(secret), {
+        iv: enc.Utf8.parse(config.iv)
+    })
+    return decryptRabbit.toString(enc.Utf8)
+}
+
+const EncryptRC4 = (message, secret, config) => {
+    let encryptRC4 = RC4.encrypt(message, enc.Utf8.parse(secret), {
+        iv: enc.Utf8.parse(config.iv)
+    })
+    return encryptRC4
+}
+
+const DecryptRC4 = (encrypted, secret, config) => {
+    let decryptRC4 = RC4.decrypt(encrypted, enc.Utf8.parse(secret), {
+        iv: enc.Utf8.parse(config.iv)
+    })
+    return decryptRC4.toString(enc.Utf8)
+}
 
 const EncryptMethods = [
     {
@@ -301,6 +329,10 @@ export {
     DecryptAES,
     EncryptTripleDES,
     DecryptTripleDES,
+    EncryptRabbit,
+    DecryptRabbit,
+    EncryptRC4,
+    DecryptRC4,
     EncryptKeccak,
     EncryptMethods,
     OutputOptions,
