@@ -71,5 +71,6 @@ export {
     UnicodeToChinese,
     ChineseToUnicode,
     Base64Encode,
+    Base64Decode,
     InArray
 }

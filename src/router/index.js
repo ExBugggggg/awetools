@@ -46,6 +46,13 @@ const routes = [
             title: 'Encrypt and Decrypt'
         },
         component: () => import('@views/EncryptView.vue')
+    }, {
+        path: '/manual',
+        name: 'manual',
+        meta: {
+            title: 'Help and Manual'
+        },
+        component: () => import('@views/ManualView.vue')
     }
 ]
 

@@ -30,15 +30,32 @@ Development Environment: `node(14.19.1)`,`npm(6.14.16)`
 
 #### Dependencies
 
-1. "crypto-js": "^4.1.1",
-2. "element-plus": "^2.2.2",
-3. "feather-icons": "^4.29.0",
-4. "js-base64": "^3.7.2",
-5. "js-sha3": "^0.8.0",
-6. "monaco-editor": "^0.33.0",
-7. "prismjs": "^1.28.0",
-8. "vue": "^3.2.25",
-9. "vue-router": "^4.0.15"
+1. `crypto-js`
+2. `element-plus`
+3. `feather-icons`
+4. `js-base64`
+5. `js-sha3`
+6. `monaco-editor`
+7. `prismjs`
+8. `vue`
+9. `vue-router`
+10. `github-markdown-css`
+11. `marked`
+
+#### Version
+
+> #### 1.0.0 Release 22/7/19
+>
+> ##### Support
+> * JSON format
+> * Regex
+> * Documentation URL
+> * Encode and Decode(Unicode to Chinese, Chinese to Unicode, Base64 Encode(utf-8), Base64 Decode(utf-8))
+> * Hash and Symmetrical Encryption(MD5, SHA1, SHA2, SHA3, Keccak, Hmac-MD5, Hmac-SHA1, Hmac-SHA2, Hmac-SHA3, AES, 3DES, Rabbit, RC4)
+> * Quick Access
+>
+> ##### Bug
+
 
 #### License
 

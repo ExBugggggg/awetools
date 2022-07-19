@@ -8,7 +8,7 @@
                     </el-menu-item>
                     <el-menu-item index="2" style="margin-right: 8px; margin-left: auto; font-weight: bold;"
                         @click="quickAccess = true">Quick Access</el-menu-item>
-                    <el-menu-item index="3" style="margin-right: 0px; font-weight: bold;" @click="helpManual = true">
+                    <el-menu-item index="3" style="margin-right: 0px; font-weight: bold;" @click="redirectTo('manual')">
                         Manual & Help</el-menu-item>
                     <el-menu-item index="4" style="margin-right: 0px; font-weight: bold;" @click="setting = true">
                         Settings</el-menu-item>
@@ -21,14 +21,13 @@
                         <h4>Quick Access</h4>
                     </template>
                     <template #default>
-                        <div>
-                            content
-                        </div>
-                    </template>
-                    <template #footer>
-                        <div style="flex: auto">
-                            <el-button>Clear History</el-button>
-                        </div>
+                        <el-scrollbar ref="scrollbar">
+                            <div v-for="quickAccessItem of quickAccessItems" :key="quickAccessItem.name">
+                                <el-row style="margin-top: 8px">
+                                    <el-button link type="primary" style="font-size:large; color: #2F4F4F; text-decoration: underline;" @click="redirectTo(quickAccessItem.pageName)">{{quickAccessItem.index + '. ' + quickAccessItem.name }}</el-button>
+                                </el-row>
+                            </div>
+                        </el-scrollbar>
                     </template>
                 </el-drawer>
                 <el-drawer v-model="setting" :direction="direction">
@@ -58,22 +57,26 @@
 </template>
 <script setup>
 import { onMounted, ref } from 'vue'
-import { RedirectTo } from './assets/common';
+import { RedirectTo } from '@assets/common';
 import configuration from '@assets/configuration.json'
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
 const quickAccess = ref(false)
 const setting = ref(false)
 const direction = ref('rtl')
 const configurationItems = ref([])
+const quickAccessItems = ref([])
 const editConfigurationDialogVisible = ref(false)
 
-const redirectTo = (url) => {
-    RedirectTo(url)
+const redirectTo = (pageName) => {
+    quickAccess.value = false
+    router.push({ name: pageName })
 }
 
 onMounted(() => {
-    configurationItems.value = configuration.configurations
-    console.log(configurationItems.value)
+    quickAccessItems.value = configuration.quickaccess
+    console.log(quickAccessItems.value)
 })
 
 const editConfiguration = () => {

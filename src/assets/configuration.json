@@ -1,12 +1,29 @@
 {
-    "configurations": [
+    "quickaccess": [
         {
-            "name": "Documentation Setting",
-            "filename": "documentation.json"
+            "index": 1,
+            "name": "JSON Formatter",
+            "pageName": "json"
         },
         {
-            "name": "Regex Demonstration",
-            "filename": "regexdemo.json"
+            "index": 2,
+            "name": "Regex Validator",
+            "pageName": "regex"
+        },
+        {
+            "index": 3,
+            "name": "Encode & Decode",
+            "pageName": "encode"
+        },
+        {
+            "index": 4,
+            "name": "Framework Documentation",
+            "pageName": "framework"
+        },
+        {
+            "index": 5,
+            "name": "Hash & Symmetrical Encryption",
+            "pageName": "encrypt"
         }
     ]
 }

@@ -36,7 +36,7 @@
     </el-row>
 </template>
 <script setup>
-import { ChineseToUnicode, UnicodeToChinese, Base64Encode } from '@assets/common'
+import { ChineseToUnicode, UnicodeToChinese, Base64Encode, Base64Decode } from '@assets/common'
 import { ref, onMounted } from '@vue/runtime-core'
 
 const convertOptions = ref([])
