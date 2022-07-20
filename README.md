@@ -44,7 +44,7 @@ Development Environment: `node(14.19.1)`,`npm(6.14.16)`
 
 #### Version
 
-> #### 1.0.0 Release 22/7/19
+> #### 0.0.1 Bate 22/7/19
 >
 > ##### Support
 > * JSON format
@@ -59,4 +59,4 @@ Development Environment: `node(14.19.1)`,`npm(6.14.16)`
 
 #### License
 
-1. Released under a MIT license. See [MIT License](https://mit-license.org) for details.
+1. Released under the MIT license. See [MIT License](https://mit-license.org) for details.
