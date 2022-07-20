@@ -256,7 +256,6 @@ const regex = () => {
 const regexChoose = (val) => {
     regexPattern.value = val.expression
     commonRegexVisiable.value = false
-    console.log(val)
 }
 
 onMounted(() => {
