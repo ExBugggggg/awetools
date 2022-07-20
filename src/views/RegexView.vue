@@ -2,7 +2,7 @@
     <el-row :gutter="24">
         <el-col :span="16" :offset="4">
             <el-row :gutter="24" justify="end">
-                <el-select></el-select>
+                <el-button @click="commonRegexVisiable = true">Common Regex</el-button>
                 <el-button style="margin-left: 8px" @click="regexTutorial = true">Regex Tutorial</el-button>
             </el-row>
 
@@ -145,12 +145,28 @@
                     </el-scrollbar>
                 </template>
             </el-drawer>
+            <el-dialog v-model="commonRegexVisiable">
+                <el-scrollbar>
+                    <el-table :data="regexDemonstrations" max-height="512" width="100%" @current-change="regexChoose">
+                        <el-table-column label="Introduction" width="200">
+                            <template #default="scope">
+                                <p style="font-weight: bold; color:#2F4F4F">{{ scope.row.name }}</p>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="Expression">
+                            <template #default="scope">
+                                <code>{{ scope.row.expression }}</code>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-scrollbar>
+            </el-dialog>
         </el-col>
     </el-row>
 </template>
 <script setup>
 import { ref, watch, onMounted } from 'vue'
-import { RegexDescription } from '@assets/regex'
+import { RegexDescription, RegexDemonstration } from '@assets/regex'
 import { RedirectTo } from '@assets/common'
 
 const regexPattern = ref('[0-9]+')
@@ -169,6 +185,7 @@ const regexTutorial = ref(false)
 const direction = ref('rtl')
 const scrollbar = ref(0)
 const drawerSize = ref('40%')
+const commonRegexVisiable = ref(false)
 const characterClasses = RegexDescription.Regex.CharacterClasses.items
 const characterName = RegexDescription.Regex.CharacterClasses.name
 const anchors = RegexDescription.Regex.Anchors.items
@@ -176,6 +193,7 @@ const anchorsName = RegexDescription.Regex.Anchors.name
 const quantifiers = RegexDescription.Regex.Quantifiers.items
 const quantifiersName = RegexDescription.Regex.Quantifiers.name
 const reference = RegexDescription.Reference
+const regexDemonstrations = RegexDemonstration.items
 
 const anchor = (id) => {
     let card = document.getElementById(id)
@@ -233,6 +251,12 @@ const regex = () => {
             resultString.value = e.message
         }
     }
+}
+
+const regexChoose = (val) => {
+    regexPattern.value = val.expression
+    commonRegexVisiable.value = false
+    console.log(val)
 }
 
 onMounted(() => {

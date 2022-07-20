@@ -202,4 +202,56 @@ const RegexDescription = {
     }
 }
 
-export { RegexDescription }
+const RegexDemonstration = {
+    items: [
+        {
+            name: "Chinese Only",
+            expression: "^[\\u4e00-\\u9fa5]{0,}"
+        },
+        {
+            name: "Number Only",
+            expression: "^[0-9]{1,}"
+        },
+        {
+            name: "English Letters Only",
+            expression: "^[A-Za-z]+$"
+        },
+        {
+            name: "Uppercase Letters Only",
+            expression: "^[A-Z]+$"
+        },
+        {
+            name: "Lowercase Letters Only",
+            expression: "^[a-z]+$"
+        },
+        {
+            name: "Phone Number(Begin with 1)",
+            expression: "^(?:(?:\\+|00)86)?1\\d{10}$"
+        },
+        {
+            name: "Phone Number",
+            expression: "^(?:(?:\\+|00)86)?1(?:(?:3[\\d])|(?:4[5-79])|(?:5[0-35-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\\d])|(?:9[189]))\\d{8}$"
+        },
+        {
+            name: "Email",
+            expression: "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$"
+        },
+        {
+            name: "ID Card",
+            expression: "^[1-9]\\d{5}(?:18|19|20)\\d{2}(?:0[1-9]|10|11|12)(?:0[1-9]|[1-2]\\d|30|31)\\d{3}[\\dXx]$"
+        },
+        {
+            name: "Web URL",
+            expression: "^(((ht|f)tps?):\\/\\/)?(^!@#$%^&*?.\\s-?\\.)+[a-z]{2,6}\\/?"
+        },
+        {
+            name: "Picture URL",
+            expression: "^https?:\\/\\/(.+\\/)+.+(\\.(gif|png|jpg|jpeg|webp|svg|psd|bmp|tif))$"
+        },
+        {
+            name: "Video URL",
+            expression: "^https?:\\/\\/(.+\\/)+.+(\\.(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb|mp4))$"
+        }
+    ]
+}
+export { RegexDescription, RegexDemonstration }
