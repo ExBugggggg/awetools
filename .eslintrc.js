@@ -31,6 +31,9 @@ module.exports = {
         'semi': [
             'error',
             'never'
-        ]
+        ],
+        'no-console': 'warn',
+        'no-empty-function': 'warn',
+        'no-multiple-empty-lines': 'warn'
     }
 }

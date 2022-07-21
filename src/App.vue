@@ -75,12 +75,8 @@ const redirectTo = (pageName) => {
 
 onMounted(() => {
     quickAccessItems.value = configuration.quickaccess
-    console.log(quickAccessItems.value)
 })
 
-const saveConfiguration = () => {
-    console.log('This function haven\'t been finished.')
-}
 </script>
 <style>
 @import '@assets/global.css';
