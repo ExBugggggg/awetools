@@ -156,9 +156,6 @@ const displayModeDisabled = ref(false)
 
 const encryptOptionChange = () => {
     let encryptMethod = encryptOptions.value.encryptMethod
-    // if(InArray(encryptMethod, ['MD5', 'SHA1', 'SHA224', 'SHA256', 'SHA384', 'SHA512', 'Keccak', 'SHA3'])){
-
-    // }
     if (InArray(encryptMethod, ['SHA3', 'HmacSHA3', 'Keccak'])) {
         outputDisabled.value = false
     } else {
