@@ -1,11 +1,13 @@
 <template>
     <el-row :gutter="24">
+        <!-- eslint-disable vue/no-v-text-v-html-on-component -->
         <el-col :span="12" :offset="6" style="margin-top: 24px" v-html="markdownContent" class="markdown-body">
         </el-col>
+        <!-- eslint-enable -->
     </el-row>
 </template>
 <script setup>
-import { onMounted, ref } from '@vue/runtime-core'
+import { onMounted, ref } from 'vue'
 import 'github-markdown-css'
 import { marked } from 'marked'
 import manual from '@assets/manual.md?raw'

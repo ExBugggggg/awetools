@@ -57,15 +57,14 @@
 </template>
 <script setup>
 import { onMounted, ref } from 'vue'
-import { RedirectTo } from '@assets/common';
+import { RedirectTo } from '@assets/common'
 import configuration from '@assets/configuration.json'
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const quickAccess = ref(false)
 const setting = ref(false)
 const direction = ref('rtl')
-const configurationItems = ref([])
 const quickAccessItems = ref([])
 const editConfigurationDialogVisible = ref(false)
 
@@ -78,14 +77,6 @@ onMounted(() => {
     quickAccessItems.value = configuration.quickaccess
     console.log(quickAccessItems.value)
 })
-
-const editConfiguration = () => {
-    editConfigurationDialogVisible.value = true
-}
-
-const exportConfiguration = () => {
-
-}
 
 const saveConfiguration = () => {
     console.log('This function haven\'t been finished.')

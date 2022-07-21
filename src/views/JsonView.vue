@@ -15,18 +15,18 @@
     </el-row>
 </template>
 <script setup>
-    import MonacoEditor from '@components/MonacoEditor.vue'
-    import { ref } from 'vue'
+import MonacoEditor from '@components/MonacoEditor.vue'
+import { ref } from 'vue'
 
-    const language = ref('json')
-    const monacoFunction = ref(null)
-    const defaultValue = ref('{\n    "tips": "Put json code here."\n}')
+const language = ref('json')
+const monacoFunction = ref(null)
+const defaultValue = ref('{\n    "tips": "Put json code here."\n}')
 
-    const formatJSON = () => {
-        monacoFunction.value.formatContent()
-    }
+const formatJSON = () => {
+    monacoFunction.value.formatContent()
+}
 
-    const clearContent = () => {
-        monacoFunction.value.clearContent()
-    }
+const clearContent = () => {
+    monacoFunction.value.clearContent()
+}
 </script>

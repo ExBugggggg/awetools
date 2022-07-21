@@ -19,7 +19,7 @@ import {
     mode,
     pad,
     enc
-} from "crypto-js"
+} from 'crypto-js'
 
 import {
     keccak_224,
@@ -30,7 +30,7 @@ import {
     sha3_256,
     sha3_384,
     sha3_512
-} from "js-sha3"
+} from 'js-sha3'
 
 // Code convert
 const ConvertToHex = (message) => {

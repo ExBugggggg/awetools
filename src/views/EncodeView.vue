@@ -37,7 +37,7 @@
 </template>
 <script setup>
 import { ChineseToUnicode, UnicodeToChinese, Base64Encode, Base64Decode } from '@assets/common'
-import { ref, onMounted } from '@vue/runtime-core'
+import { ref, onMounted } from 'vue'
 
 const convertOptions = ref([])
 const chooseOption = ref('')

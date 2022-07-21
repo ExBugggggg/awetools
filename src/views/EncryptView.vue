@@ -94,7 +94,7 @@
     </el-row>
 </template>
 <script setup>
-import { ref, onMounted } from '@vue/runtime-core'
+import { ref, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { InArray } from '@assets/common'
 import {
@@ -202,7 +202,6 @@ const encrypt = () => {
     let encryptMethod = encryptObject.encryptMethod
     let outputOption = encryptObject.outputOption
     let secret = encryptObject.secret
-    let privateSecret = encryptObject.privateSecret
     let encryptMode = getEncryptModeObject(encryptObject.encryptMode)
     let encryptPadding = getEncryptPaddingObejct(encryptObject.encryptPadding)
     let enc = encryptObject.displayMode // 0 => Hex, 1 => Base64
@@ -215,70 +214,70 @@ const encrypt = () => {
         padding: encryptPadding
     }
     switch (encryptMethod) {
-        case 'MD5':
-            resultString.value = (enc === 1) ? ConvertToBase64(EncryptMD5(encryptMessage)) : EncryptMD5(encryptMessage)
-            break
-        case 'SHA1':
-            resultString.value = (enc === 1) ? ConvertToBase64(EncryptSHA1(encryptMessage)) : EncryptSHA1(encryptMessage)
-            break
-        case 'SHA224':
-            resultString.value = (enc === 1) ? ConvertToBase64(EncryptSHA224(encryptMessage)) : EncryptSHA224(encryptMessage)
-            break
-        case 'SHA256':
-            resultString.value = (enc === 1) ? ConvertToBase64(EncryptSHA256(encryptMessage)) : EncryptSHA256(encryptMessage)
-            break
-        case 'SHA384':
-            resultString.value = (enc === 1) ? ConvertToBase64(EncryptSHA384(encryptMessage)) : EncryptSHA384(encryptMessage)
-            break
-        case 'SHA512':
-            resultString.value = (enc === 1) ? ConvertToBase64(EncryptSHA512(encryptMessage)) : EncryptSHA512(encryptMessage)
-            break
-        case 'SHA3':
-            resultString.value = (enc === 1) ? ConvertToBase64(EncryptSHA3(encryptMessage, outputOption)) : EncryptSHA3(encryptMessage, outputOption)
-            break
-        case 'Keccak':
-            resultString.value = (enc === 1) ? ConvertToBase64(EncryptKeccak(encryptMessage, outputOption)) : EncryptKeccak(encryptMessage, outputOption)
-            break
-        case 'HmacMD5':
-            resultString.value = (enc === 1) ? ConvertToBase64(EncryptHmacMD5(encryptMessage, secret)) : EncryptHmacMD5(encryptMessage, secret)
-            break
-        case 'HmacSHA1':
-            resultString.value = (enc === 1) ? ConvertToBase64(EncryptHmacSHA1(encryptMessage, secret)) : EncryptHmacSHA1(encryptMessage, secret)
-            break
-        case 'HmacSHA224':
-            resultString.value = (enc === 1) ? ConvertToBase64(EncryptHmacSHA224(encryptMessage, secret)) : EncryptHmacSHA224(encryptMessage, secret)
-            break
-        case 'HmacSHA256':
-            resultString.value = (enc === 1) ? ConvertToBase64(EncryptHmacSHA256(encryptMessage, secret)) : EncryptHmacSHA256(encryptMessage, secret)
-            break
-        case 'HmacSHA384':
-            resultString.value = (enc === 1) ? ConvertToBase64(EncryptHmacSHA384(encryptMessage, secret)) : EncryptHmacSHA384(encryptMessage, secret)
-            break
-        case 'HmacSHA512':
-            resultString.value = (enc === 1) ? ConvertToBase64(EncryptHmacSHA512(encryptMessage, secret)) : EncryptHmacSHA512(encryptMessage, secret)
-            break
-        case 'HmacSHA3':
-            resultString.value = (enc === 1) ? ConvertToBase64(EncryptHmacSHA3(encryptMessage, secret)) : EncryptHmacSHA3(encryptMessage, secret)
-            break
-        case 'AES':
-            let aesEncryptResult = EncryptAES(encryptMessage, secret, config)
-            resultString.value = `${aesEncryptResult}\n\nkey:${aesEncryptResult.key}\niv:${aesEncryptResult.iv}\nsalt:${aesEncryptResult.salt}\nciphertext:${aesEncryptResult.ciphertext}`
-            break
-        case '3DES':
-            let tripleDesEncryptResult = EncryptTripleDES(encryptMessage, secret, config)
-            resultString.value = `${tripleDesEncryptResult}\n\nkey:${tripleDesEncryptResult.key}\niv:${tripleDesEncryptResult.iv}\nsalt:${tripleDesEncryptResult.salt}\nciphertext:${tripleDesEncryptResult.ciphertext}`
-            break
-        case 'Rabbit':
-            let rabbitEncryptResult = EncryptRabbit(encryptMessage, secret, config)
-            resultString.value = `${rabbitEncryptResult}\n\nkey:${rabbitEncryptResult.key}\niv:${rabbitEncryptResult.iv}\nsalt:${rabbitEncryptResult.salt}\nciphertext:${rabbitEncryptResult.ciphertext}`
-            break
-        case 'RC4':
-            let rc4EncryptResult = EncryptRC4(encryptMessage, secret, config)
-            resultString.value = `${rc4EncryptResult}\n\nkey:${rc4EncryptResult.key}\niv:${rc4EncryptResult.iv}\nsalt:${rc4EncryptResult.salt}\nciphertext:${rc4EncryptResult.ciphertext}`
-            break
-        default:
-            ElMessage.error(`No encrypt method: ${encryptMethod}`)
-            return
+    case 'MD5':
+        resultString.value = (enc === 1) ? ConvertToBase64(EncryptMD5(encryptMessage)) : EncryptMD5(encryptMessage)
+        break
+    case 'SHA1':
+        resultString.value = (enc === 1) ? ConvertToBase64(EncryptSHA1(encryptMessage)) : EncryptSHA1(encryptMessage)
+        break
+    case 'SHA224':
+        resultString.value = (enc === 1) ? ConvertToBase64(EncryptSHA224(encryptMessage)) : EncryptSHA224(encryptMessage)
+        break
+    case 'SHA256':
+        resultString.value = (enc === 1) ? ConvertToBase64(EncryptSHA256(encryptMessage)) : EncryptSHA256(encryptMessage)
+        break
+    case 'SHA384':
+        resultString.value = (enc === 1) ? ConvertToBase64(EncryptSHA384(encryptMessage)) : EncryptSHA384(encryptMessage)
+        break
+    case 'SHA512':
+        resultString.value = (enc === 1) ? ConvertToBase64(EncryptSHA512(encryptMessage)) : EncryptSHA512(encryptMessage)
+        break
+    case 'SHA3':
+        resultString.value = (enc === 1) ? ConvertToBase64(EncryptSHA3(encryptMessage, outputOption)) : EncryptSHA3(encryptMessage, outputOption)
+        break
+    case 'Keccak':
+        resultString.value = (enc === 1) ? ConvertToBase64(EncryptKeccak(encryptMessage, outputOption)) : EncryptKeccak(encryptMessage, outputOption)
+        break
+    case 'HmacMD5':
+        resultString.value = (enc === 1) ? ConvertToBase64(EncryptHmacMD5(encryptMessage, secret)) : EncryptHmacMD5(encryptMessage, secret)
+        break
+    case 'HmacSHA1':
+        resultString.value = (enc === 1) ? ConvertToBase64(EncryptHmacSHA1(encryptMessage, secret)) : EncryptHmacSHA1(encryptMessage, secret)
+        break
+    case 'HmacSHA224':
+        resultString.value = (enc === 1) ? ConvertToBase64(EncryptHmacSHA224(encryptMessage, secret)) : EncryptHmacSHA224(encryptMessage, secret)
+        break
+    case 'HmacSHA256':
+        resultString.value = (enc === 1) ? ConvertToBase64(EncryptHmacSHA256(encryptMessage, secret)) : EncryptHmacSHA256(encryptMessage, secret)
+        break
+    case 'HmacSHA384':
+        resultString.value = (enc === 1) ? ConvertToBase64(EncryptHmacSHA384(encryptMessage, secret)) : EncryptHmacSHA384(encryptMessage, secret)
+        break
+    case 'HmacSHA512':
+        resultString.value = (enc === 1) ? ConvertToBase64(EncryptHmacSHA512(encryptMessage, secret)) : EncryptHmacSHA512(encryptMessage, secret)
+        break
+    case 'HmacSHA3':
+        resultString.value = (enc === 1) ? ConvertToBase64(EncryptHmacSHA3(encryptMessage, secret)) : EncryptHmacSHA3(encryptMessage, secret)
+        break
+    case 'AES':
+        var aesEncryptResult = EncryptAES(encryptMessage, secret, config)
+        resultString.value = `${aesEncryptResult}\n\nkey:${aesEncryptResult.key}\niv:${aesEncryptResult.iv}\nsalt:${aesEncryptResult.salt}\nciphertext:${aesEncryptResult.ciphertext}`
+        break
+    case '3DES':
+        var tripleDesEncryptResult = EncryptTripleDES(encryptMessage, secret, config)
+        resultString.value = `${tripleDesEncryptResult}\n\nkey:${tripleDesEncryptResult.key}\niv:${tripleDesEncryptResult.iv}\nsalt:${tripleDesEncryptResult.salt}\nciphertext:${tripleDesEncryptResult.ciphertext}`
+        break
+    case 'Rabbit':
+        var rabbitEncryptResult = EncryptRabbit(encryptMessage, secret, config)
+        resultString.value = `${rabbitEncryptResult}\n\nkey:${rabbitEncryptResult.key}\niv:${rabbitEncryptResult.iv}\nsalt:${rabbitEncryptResult.salt}\nciphertext:${rabbitEncryptResult.ciphertext}`
+        break
+    case 'RC4':
+        var rc4EncryptResult = EncryptRC4(encryptMessage, secret, config)
+        resultString.value = `${rc4EncryptResult}\n\nkey:${rc4EncryptResult.key}\niv:${rc4EncryptResult.iv}\nsalt:${rc4EncryptResult.salt}\nciphertext:${rc4EncryptResult.ciphertext}`
+        break
+    default:
+        ElMessage.error(`No encrypt method: ${encryptMethod}`)
+        return
     }
 }
 
@@ -287,7 +286,6 @@ const decrypt = () => {
 
     let encryptMethod = encryptObject.encryptMethod
     let secret = encryptObject.secret
-    let privateSecret = encryptObject.privateSecret
     let encryptMode = getEncryptModeObject(encryptObject.encryptMode)
     let encryptPadding = getEncryptPaddingObejct(encryptObject.encryptPadding)
     let iv = encryptObject.iv
@@ -298,46 +296,46 @@ const decrypt = () => {
         padding: encryptPadding
     }
     if (!secret) {
-        ElMessage.error(`No secret`)
+        ElMessage.error('No secret')
         return
     }
     let decryptMessage = sourceString.value
     if (!decryptMessage) {
-        ElMessage.error(`No message need to decrypt`)
+        ElMessage.error('No message need to decrypt')
         return
     }
     switch (encryptMethod) {
-        case 'AES':
-            try {
-                resultString.value = DecryptAES(decryptMessage, secret, config)
-            } catch (e) {
-                resultString.value = `Decrypt just allow Base64 string. Don't use Hex string.`
-            }
-            break
-        case '3DES':
-            try {
-                resultString.value = DecryptTripleDES(decryptMessage, secret, config)
-            } catch (e) {
-                resultString.value = `Decrypt just allow Base64 string. Don't use Hex string.`
-            }
-            break
-        case 'Rabbit':
-            try {
-                resultString.value = DecryptRabbit(decryptMessage, secret, config)
-            } catch (e) {
-                resultString.value = `Decrypt just allow Base64 string. Don't use Hex string.`
-            }
-            break
-        case 'RC4':
-            try {
-                resultString.value = DecryptRC4(decryptMessage, secret, config)
-            } catch (e) {
-                resultString.value = `Decrypt just allow Base64 string. Don't use Hex string.`
-            }
-            break
-        default:
-            ElMessage.error(`No encrypt method: ${encryptMethod}`)
-            return
+    case 'AES':
+        try {
+            resultString.value = DecryptAES(decryptMessage, secret, config)
+        } catch (e) {
+            resultString.value = 'Decrypt just allow Base64 string. Don\'t use Hex string.'
+        }
+        break
+    case '3DES':
+        try {
+            resultString.value = DecryptTripleDES(decryptMessage, secret, config)
+        } catch (e) {
+            resultString.value = 'Decrypt just allow Base64 string. Don\'t use Hex string.'
+        }
+        break
+    case 'Rabbit':
+        try {
+            resultString.value = DecryptRabbit(decryptMessage, secret, config)
+        } catch (e) {
+            resultString.value = 'Decrypt just allow Base64 string. Don\'t use Hex string.'
+        }
+        break
+    case 'RC4':
+        try {
+            resultString.value = DecryptRC4(decryptMessage, secret, config)
+        } catch (e) {
+            resultString.value = 'Decrypt just allow Base64 string. Don\'t use Hex string.'
+        }
+        break
+    default:
+        ElMessage.error('No encrypt method: ${encryptMethod}')
+        return
     }
 }
 

@@ -205,7 +205,10 @@ const top = () => {
 }
 
 watch([regexPattern, sourceString], ([regexPattern_nv, sourceString_nv], [regexPattern_ov, sourceString_ov]) => {
-    regex()
+    if (regexPattern_nv !== regexPattern_ov || sourceString_nv !== sourceString_ov) {
+        regex()
+    }
+
 })
 
 const redirectTo = () => {
@@ -219,8 +222,8 @@ const previewDescription = (text) => {
 const regex = () => {
     resultString.value = ''
     let modifiersString = modifiersMap[modifiersIndex.value].key
-    let circleTimes = [...sourceString.value].length;
-    let matchTimes = 0;
+    let circleTimes = [...sourceString.value].length
+    let matchTimes = 0
     try {
         if (regexPattern.value === '') {
             if (matchTimes === 0) {
@@ -231,8 +234,8 @@ const regex = () => {
         }
         let reg = new RegExp(regexPattern.value, modifiersString)
         resultString.value = ''
-        let resultArray = [];
-        let matchContent = '';
+        let resultArray = []
+        let matchContent = ''
         if (modifiersString !== 'g' && modifiersString !== 'gi') {
             circleTimes = 1
         }

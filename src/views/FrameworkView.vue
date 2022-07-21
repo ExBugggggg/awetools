@@ -87,14 +87,14 @@ const searchDocuments = () => {
     
     if(!searchContent.value.startsWith('@')){
         ElMessage({
-            message: `Invalid search parameter. You need start with '@' character.`,
+            message: 'Invalid search parameter. You need start with \'@\' character.',
             type: 'warning'
         })
         return
     }
     if(!searchContent.value.includes(':')){
         ElMessage({
-            message: `Invalid search parameter. You need add ':' character between search type and search keywords.`,
+            message: 'Invalid search parameter. You need add \':\' character between search type and search keywords.',
             type: 'warning'
         })
         return
@@ -103,11 +103,11 @@ const searchDocuments = () => {
     let splitCharacterIndex = searchContent.value.indexOf(':')
     let checkType = false
     switch(searchContent.value.slice(1, splitCharacterIndex)){
-        case 'name':
-            checkType = true
-            break
-        default:
-            checkType = false
+    case 'name':
+        checkType = true
+        break
+    default:
+        checkType = false
     }
     if(!checkType){
         ElMessage({
