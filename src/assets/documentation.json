@@ -41,7 +41,7 @@
             "keyword": ["js-framework"],
             "items": [
                 {
-                    "name":  "jQuery",
+                    "name": "jQuery",
                     "url": "https://api.jquery.com"
                 },
                 {
@@ -51,6 +51,96 @@
                 {
                     "name": "Vue3",
                     "url": "https://vuejs.org"
+                },
+                {
+                    "name": "Angular",
+                    "url": "https://angular.io/"
+                },
+                {
+                    "name": "React",
+                    "url": "https://reactjs.org/"
+                },
+                {
+                    "name": "Backbone",
+                    "url": "https://backbonejs.org/"
+                }
+            ]
+        },
+        {
+            "name": "PHP Framework Documentation",
+            "keyword": ["php-framework"],
+            "items": [
+                {
+                    "name": "Laravel",
+                    "url": "https://laravel.com/"
+                },
+                {
+                    "name": "CakePHP",
+                    "url": "https://cakephp.org/"
+                },
+                {
+                    "name": "Zend",
+                    "url": "https://framework.zend.com/"
+                },
+                {
+                    "name": "Symfony",
+                    "url": "https://symfony.com/"
+                },
+                {
+                    "name": "Yii2",
+                    "url": "https://www.yiiframework.com/doc/guide/2.0/en"
+                },
+                {
+                    "name": "ThinkPHP6.0",
+                    "url": "https://static.kancloud.cn/manual/thinkphp6_0"
+                },
+                {
+                    "name": "Phalcon",
+                    "url": "https://phalcon.io/en-us"
+                }
+            ]
+        },
+        {
+            "name": "Language",
+            "keyword": ["language"],
+            "items": [
+                {
+                    "name": "PHP",
+                    "url": "https://www.php.net/"
+                },
+                {
+                    "name": "Python",
+                    "url": "https://www.python.org/"
+                },
+                {
+                    "name": "Go",
+                    "url": "https://golang.google.cn/"
+                }
+            ]
+        },
+        {
+            "name": "Cross-Platform Development Framework Documentation",
+            "keyword": ["cross-plateform"],
+            "items": [
+                {
+                    "name": "Flutter",
+                    "url": "https://flutter.dev/"
+                },
+                {
+                    "name": "Weex",
+                    "url": "https://doc.weex.io/zh/"
+                },
+                {
+                    "name": "Electron",
+                    "url": "https://www.electronjs.org/"
+                },
+                {
+                    "name": "Qt5",
+                    "url": "https://doc.qt.io/qt-5/qt5-intro.html"
+                },
+                {
+                    "name": "PyQt5",
+                    "url": "https://www.riverbankcomputing.com/"
                 }
             ]
         }
