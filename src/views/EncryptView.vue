@@ -54,8 +54,8 @@
                             <el-input v-model="encryptOptions.iv" :disabled="ivDisabled" placeholder="iv (16 Bytes)">
                             </el-input>
                         </el-form-item>
-                        <el-form-item label="Secret/Salt">
-                            <el-input type="textarea" :rows="5" placeholder="Secret/Salt (16/24/32 Bytes)"
+                        <el-form-item label="Secret/Salt/Key">
+                            <el-input type="textarea" :rows="5" placeholder="Secret/Salt/Key (16/24/32 Bytes)"
                                 v-model="encryptOptions.secret" :disabled="secretDisabled"></el-input>
                         </el-form-item>
                         <el-form-item>
@@ -261,6 +261,10 @@ const encrypt = () => {
         resultString.value = `${aesEncryptResult}\n\nkey:${aesEncryptResult.key}\niv:${aesEncryptResult.iv}\nsalt:${aesEncryptResult.salt}\nciphertext:${aesEncryptResult.ciphertext}`
         break
     case '3DES':
+        if (secret.length < 4) {
+            resultString.value = '3DES requires the key length to be 64, 128, 192 or >192.'
+            return
+        }
         var tripleDesEncryptResult = EncryptTripleDES(encryptMessage, secret, config)
         resultString.value = `${tripleDesEncryptResult}\n\nkey:${tripleDesEncryptResult.key}\niv:${tripleDesEncryptResult.iv}\nsalt:${tripleDesEncryptResult.salt}\nciphertext:${tripleDesEncryptResult.ciphertext}`
         break
