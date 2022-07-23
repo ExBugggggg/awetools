@@ -53,6 +53,13 @@ const routes = [
             title: 'Help and Manual'
         },
         component: () => import('@views/ManualView.vue')
+    }, {
+        path: '/mobile',
+        name: 'mobile',
+        meta: {
+            title: 'No support.'
+        },
+        component: () => import('@views/MobileView.vue')
     }
 ]
 

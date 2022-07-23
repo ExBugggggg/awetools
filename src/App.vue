@@ -57,7 +57,7 @@
 </template>
 <script setup>
 import { onMounted, ref } from 'vue'
-import { RedirectTo } from '@assets/common'
+import { RedirectTo} from '@assets/common'
 import configuration from '@assets/configuration.json'
 import { useRouter } from 'vue-router'
 
