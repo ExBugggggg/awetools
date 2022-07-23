@@ -1,5 +1,5 @@
 <template>
-    <div class="common-layout">
+    <div class="common-layout" style="min-width: 992px">
         <el-container>
             <el-header style="padding: 0px">
                 <el-menu class="el-menu-demo" mode="horizontal" text-color="#2F4F4F" active-text-color="#2F4F4F">
