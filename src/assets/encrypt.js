@@ -32,6 +32,10 @@ import {
     sha3_512
 } from 'js-sha3'
 
+import {
+    IsHex
+} from '@assets/common'
+
 // Code convert
 const ConvertToHex = (message) => {
     return enc.Hex.stringify(message)
@@ -105,37 +109,27 @@ const EncryptKeccak = (message, output) => {
 
 // Just support utf-8
 const EncryptAES = (message, secret, config) => {
-    let encryptAES = AES.encrypt(message, enc.Utf8.parse(secret), {
-        iv: enc.Utf8.parse(config.iv),
-        padding: config.padding,
-        mode: config.mode
-    })
+    let encryptAES = AES.encrypt(message, enc.Utf8.parse(secret), config)
     return encryptAES
 }
 const DecryptAES = (encrypted, secret, config) => {
-    let decryptAES = AES.decrypt(encrypted, enc.Utf8.parse(secret), {
-        iv: enc.Utf8.parse(config.iv),
-        padding: config.padding,
-        mode: config.mode
-    })
+    if (IsHex(encrypted)) {
+        throw new Error('Malformed UTF-8 data')
+    }
+    let decryptAES = AES.decrypt(encrypted, enc.Utf8.parse(secret), config)
     return decryptAES.toString(enc.Utf8)
 }
 
 const EncryptTripleDES = (message, secret, config) => {
-    let encryptTripleDES = TripleDES.encrypt(message, enc.Utf8.parse(secret), {
-        iv: enc.Utf8.parse(config.iv),
-        padding: config.padding,
-        mode: config.mode
-    })
+    let encryptTripleDES = TripleDES.encrypt(message, enc.Utf8.parse(secret), config)
     return encryptTripleDES
 }
 
 const DecryptTripleDES = (encrypted, secret, config) => {
-    let decryptTripleDES = TripleDES.decrypt(encrypted, enc.Utf8.parse(secret), {
-        iv: enc.Utf8.parse(config.iv),
-        padding: config.padding,
-        mode: config.mode
-    })
+    if (IsHex(encrypted)) {
+        throw new Error('Malformed UTF-8 data')
+    }
+    let decryptTripleDES = TripleDES.decrypt(encrypted, enc.Utf8.parse(secret), config)
     return decryptTripleDES.toString(enc.Utf8)
 }
 
@@ -147,6 +141,9 @@ const EncryptRabbit = (message, secret, config) => {
 }
 
 const DecryptRabbit = (encrypted, secret, config) => {
+    if (IsHex(encrypted)) {
+        throw new Error('Malformed UTF-8 data')
+    }
     let decryptRabbit = Rabbit.decrypt(encrypted, enc.Utf8.parse(secret), {
         iv: enc.Utf8.parse(config.iv)
     })
@@ -161,6 +158,9 @@ const EncryptRC4 = (message, secret, config) => {
 }
 
 const DecryptRC4 = (encrypted, secret, config) => {
+    if (IsHex(encrypted)) {
+        throw new Error('Malformed UTF-8 data')
+    }
     let decryptRC4 = RC4.decrypt(encrypted, enc.Utf8.parse(secret), {
         iv: enc.Utf8.parse(config.iv)
     })
@@ -310,6 +310,37 @@ const EncryptPadding = [
     }
 ]
 
+const GetCipherConfig = (iv, modeValue, paddingValue) => {
+    const modeObject = (() => {
+        for (let mode of EncryptMode) {
+            if (mode.value === modeValue) {
+                return mode.object
+            }
+        }
+        return ''
+    })()
+    const paddingObject = (() => {
+        for (let padding of EncryptPadding) {
+            if (padding.value === paddingValue) {
+                return padding.object
+            }
+        }
+        return ''
+    })()
+    if (modeObject === '' || paddingObject === ''){
+        return {code: 0, config: {}}
+    } else {
+        return {
+            code: 1,
+            config: {
+                iv: enc.Utf8.parse(iv),
+                padding: paddingObject,
+                mode: modeObject
+            }
+        }
+    }
+}
+
 export {
     EncryptMD5,
     EncryptSHA1,
@@ -339,5 +370,6 @@ export {
     EncryptMode,
     EncryptPadding,
     ConvertToBase64,
-    ConvertToHex
+    ConvertToHex,
+    GetCipherConfig
 }

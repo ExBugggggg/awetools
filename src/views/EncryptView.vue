@@ -125,7 +125,8 @@ import {
     DecryptRC4,
     EncryptHmacSHA3,
     EncryptKeccak,
-    ConvertToBase64
+    ConvertToBase64,
+    GetCipherConfig
 } from '@assets/encrypt'
 
 const encryptMethods = ref([])
@@ -180,7 +181,7 @@ const encryptOptionChange = () => {
         decryptDisabled.value = true
     }
     // iv disabled
-    if (InArray(encryptMethod, ['AES', '3DES', 'Rabbit', 'RC4']) && encryptOptions.value.encryptMode !== 'ECB') {
+    if (InArray(encryptMethod, ['AES', '3DES']) && encryptOptions.value.encryptMode !== 'ECB' || InArray(encryptMethod, ['Rabbit', 'RC4'])) {
         ivDisabled.value = false
     } else {
         ivDisabled.value = true
@@ -199,17 +200,13 @@ const encrypt = () => {
     let encryptMethod = encryptObject.encryptMethod
     let outputOption = encryptObject.outputOption
     let secret = encryptObject.secret
-    let encryptMode = getEncryptModeObject(encryptObject.encryptMode)
-    let encryptPadding = getEncryptPaddingObejct(encryptObject.encryptPadding)
+    let encryptMode = encryptObject.encryptMode
+    let encryptPadding = encryptObject.encryptPadding
     let enc = encryptObject.displayMode // 0 => Hex, 1 => Base64
     let iv = encryptObject.iv
 
     let encryptMessage = sourceString.value
-    let config = {
-        iv: iv,
-        mode: encryptMode,
-        padding: encryptPadding
-    }
+    let config = GetCipherConfig(iv, encryptMode, encryptPadding)
     switch (encryptMethod) {
     case 'MD5':
         resultString.value = (enc === 1) ? ConvertToBase64(EncryptMD5(encryptMessage)) : EncryptMD5(encryptMessage)
@@ -257,23 +254,31 @@ const encrypt = () => {
         resultString.value = (enc === 1) ? ConvertToBase64(EncryptHmacSHA3(encryptMessage, secret)) : EncryptHmacSHA3(encryptMessage, secret)
         break
     case 'AES':
-        var aesEncryptResult = EncryptAES(encryptMessage, secret, config)
+        if (config.code === 0) {
+            ElMessage.error('No choose any encrypt mode or encrypt padding.')
+            return
+        }
+        var aesEncryptResult = EncryptAES(encryptMessage, secret, config.config)
         resultString.value = `${aesEncryptResult}\n\nkey:${aesEncryptResult.key}\niv:${aesEncryptResult.iv}\nsalt:${aesEncryptResult.salt}\nciphertext:${aesEncryptResult.ciphertext}`
         break
     case '3DES':
+        if (config.code === 0) {
+            ElMessage.error('No choose any encrypt mode or encrypt padding.')
+            return
+        }
         if (secret.length < 4) {
             resultString.value = '3DES requires the key length to be 64, 128, 192 or >192.'
             return
         }
-        var tripleDesEncryptResult = EncryptTripleDES(encryptMessage, secret, config)
+        var tripleDesEncryptResult = EncryptTripleDES(encryptMessage, secret, config.config)
         resultString.value = `${tripleDesEncryptResult}\n\nkey:${tripleDesEncryptResult.key}\niv:${tripleDesEncryptResult.iv}\nsalt:${tripleDesEncryptResult.salt}\nciphertext:${tripleDesEncryptResult.ciphertext}`
         break
     case 'Rabbit':
-        var rabbitEncryptResult = EncryptRabbit(encryptMessage, secret, config)
+        var rabbitEncryptResult = EncryptRabbit(encryptMessage, secret, {iv: iv})
         resultString.value = `${rabbitEncryptResult}\n\nkey:${rabbitEncryptResult.key}\niv:${rabbitEncryptResult.iv}\nsalt:${rabbitEncryptResult.salt}\nciphertext:${rabbitEncryptResult.ciphertext}`
         break
     case 'RC4':
-        var rc4EncryptResult = EncryptRC4(encryptMessage, secret, config)
+        var rc4EncryptResult = EncryptRC4(encryptMessage, secret, {iv: iv})
         resultString.value = `${rc4EncryptResult}\n\nkey:${rc4EncryptResult.key}\niv:${rc4EncryptResult.iv}\nsalt:${rc4EncryptResult.salt}\nciphertext:${rc4EncryptResult.ciphertext}`
         break
     default:
@@ -287,15 +292,11 @@ const decrypt = () => {
 
     let encryptMethod = encryptObject.encryptMethod
     let secret = encryptObject.secret
-    let encryptMode = getEncryptModeObject(encryptObject.encryptMode)
-    let encryptPadding = getEncryptPaddingObejct(encryptObject.encryptPadding)
+    let encryptMode = encryptObject.encryptMode
+    let encryptPadding = encryptObject.encryptPadding
     let iv = encryptObject.iv
 
-    let config = {
-        iv: iv,
-        mode: encryptMode,
-        padding: encryptPadding
-    }
+    let config = GetCipherConfig(iv, encryptMode, encryptPadding)
     if (!secret) {
         ElMessage.error('No secret')
         return
@@ -308,28 +309,36 @@ const decrypt = () => {
     switch (encryptMethod) {
     case 'AES':
         try {
-            resultString.value = DecryptAES(decryptMessage, secret, config)
+            if (config.code === 0) {
+                ElMessage.error('No choose any encrypt mode or encrypt padding.')
+                return
+            }
+            resultString.value = DecryptAES(decryptMessage, secret, config.config)
         } catch (e) {
             resultString.value = 'Decrypt just allow Base64 string. Don\'t use Hex string.'
         }
         break
     case '3DES':
         try {
-            resultString.value = DecryptTripleDES(decryptMessage, secret, config)
+            if (config.code === 0) {
+                ElMessage.error('No choose any encrypt mode or encrypt padding.')
+                return
+            }
+            resultString.value = DecryptTripleDES(decryptMessage, secret, config.config)
         } catch (e) {
             resultString.value = 'Decrypt just allow Base64 string. Don\'t use Hex string.'
         }
         break
     case 'Rabbit':
         try {
-            resultString.value = DecryptRabbit(decryptMessage, secret, config)
+            resultString.value = DecryptRabbit(decryptMessage, secret, {iv: iv})
         } catch (e) {
             resultString.value = 'Decrypt just allow Base64 string. Don\'t use Hex string.'
         }
         break
     case 'RC4':
         try {
-            resultString.value = DecryptRC4(decryptMessage, secret, config)
+            resultString.value = DecryptRC4(decryptMessage, secret, {iv: iv})
         } catch (e) {
             resultString.value = 'Decrypt just allow Base64 string. Don\'t use Hex string.'
         }
@@ -338,26 +347,6 @@ const decrypt = () => {
         ElMessage.error('No encrypt method: ${encryptMethod}')
         return
     }
-}
-
-// get aes encrypt mode obejct
-const getEncryptModeObject = (modeValue) => {
-    for (let mode of EncryptMode) {
-        if (mode.value === modeValue) {
-            return mode.object
-        }
-    }
-    ElMessage.error(`No encrypt mode: ${modeValue}`)
-}
-
-// get aes encrypt padding obejct
-const getEncryptPaddingObejct = (paddingValue) => {
-    for (let padding of EncryptPadding) {
-        if (padding.value === paddingValue) {
-            return padding.object
-        }
-    }
-    ElMessage.error(`No encrypt padding: ${paddingValue}`)
 }
 
 onMounted(() => {

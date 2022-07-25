@@ -69,6 +69,10 @@ const IsMobile = () => {
     return navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
 }
 
+const IsHex = (source) => {
+    return (/^[a-z0-9]+$/gi.test(source))
+}
+
 export { 
     RedirectTo,
     OpenWindow,
@@ -79,5 +83,6 @@ export {
     UnicodeToASCII,
     ASCIIToChinese,
     InArray,
-    IsMobile
+    IsMobile,
+    IsHex
 }

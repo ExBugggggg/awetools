@@ -14,18 +14,25 @@ import {
     EncryptHmacSHA512,
     EncryptSHA3,
     EncryptHmacSHA3,
-    // EncryptAES,
-    // DecryptAES,
-    // EncryptTripleDES,
-    // DecryptTripleDES,
-    // EncryptRabbit,
-    // DecryptRabbit,
-    // EncryptRC4,
-    // DecryptRC4,
+    EncryptAES,
+    DecryptAES,
+    EncryptTripleDES,
+    DecryptTripleDES,
+    EncryptRabbit,
+    DecryptRabbit,
+    EncryptRC4,
+    DecryptRC4,
     EncryptKeccak,
     ConvertToBase64,
-    ConvertToHex
+    ConvertToHex,
+    EncryptPadding,
+    EncryptMode,
+    GetCipherConfig
 } from '@assets/encrypt'
+
+import {
+    enc
+} from 'crypto-js'
 
 test('MD5 & HmacMD5 Test', () => {
     expect(EncryptMD5('').toString()).toBe('d41d8cd98f00b204e9800998ecf8427e')
@@ -88,6 +95,71 @@ test('Keccak Test', () => {
 })
 
 test('Base64 Convert & Hex Convert Test', () => {
-    expect(ConvertToBase64('d41d8cd98f00b204e9800998ecf8427e')).toBe('1B2M2Y8AsgTpgAmY7PhCfg==')
-    expect(ConvertToHex('2jmj7l5rSw0yVb/vlWAYkK/YBwk=')).toBe('da39a3ee5e6b4b0d3255bfef95601890afd80709')
+    expect(ConvertToBase64(EncryptMD5(''))).toBe('1B2M2Y8AsgTpgAmY7PhCfg==')
+    expect(ConvertToHex(EncryptMD5(''))).toBe('d41d8cd98f00b204e9800998ecf8427e')
 })
+
+test('Get Cipher Config Test', () => {
+    expect(GetCipherConfig('', '', '')).toEqual({code: 0, config: {}})
+    expect(GetCipherConfig('', 'ECB', 'Pkcs7')).toEqual({code: 1, config: {iv: enc.Utf8.parse(''), mode: EncryptMode[4].object, padding: EncryptPadding[0].object}})
+})
+
+test('AES Test', () => {
+    const message = 'test'
+    const message_16 = 'testtesttesttest'
+    const iv = '1234testtest4567'
+    const key_128 = 'test1234test5678'
+    const key_192 = 'test1234test5678test9009'
+    const key_256 = 'test1234test5678test9009tset8765'
+    
+    expect(EncryptAES(message, key_128, GetCipherConfig(iv, 'ECB', 'Pkcs7').config).toString()).toBe('NbGCPn3KU288lIQvHVE6Ug==')
+    expect(EncryptAES(message, key_192, GetCipherConfig(iv, 'ECB', 'Pkcs7').config).toString()).toBe('DKuIkT0tQoaGA+e+kweKdQ==')
+    expect(EncryptAES(message, key_256, GetCipherConfig(iv, 'ECB', 'Pkcs7').config).toString()).toBe('teUQgsLrbxfGSCDqXLi7jg==')
+    /** CBC ECB/NoPadding need 16 Bytes message */
+    expect(EncryptAES(message_16, key_128, GetCipherConfig(iv, 'CBC', 'NoPadding').config).toString()).toBe('QqJToPyzyGbxKwvFVLT38A==')
+    expect(EncryptAES(message, key_128, GetCipherConfig(iv, 'CFB', 'AnsiX923').config).toString()).toBe('b8XdK9JJSBrYC3hlrjpIWg==')
+    expect(EncryptAES(message, key_128, GetCipherConfig(iv, 'CTR', 'Iso97971').config).toString()).toBe('b8XdK1JJSBrYC3hlrjpIVg==')
+
+    // ECB/Iso10126 result is not only
+    expect(DecryptAES('NbGCPn3KU288lIQvHVE6Ug==', key_128, GetCipherConfig(iv, 'ECB', 'Pkcs7').config).toString()).toBe('test')
+    expect(DecryptAES('DKuIkT0tQoaGA+e+kweKdQ==', key_192, GetCipherConfig(iv, 'ECB', 'Pkcs7').config).toString()).toBe('test')
+    expect(DecryptAES('teUQgsLrbxfGSCDqXLi7jg==', key_256, GetCipherConfig(iv, 'ECB', 'Pkcs7').config).toString()).toBe('test')
+})
+
+test('3DES Test', () => {
+    const message = 'testtest'
+    const secret = 'testtesttesttest'
+    const iv = 'testtesttesttest'
+    expect(EncryptTripleDES(message, secret, GetCipherConfig(iv, 'ECB', 'Pkcs7').config).toString()).toBe('v6O+hf9j55f7gfjuPnPEtg==')
+    expect(DecryptTripleDES('v6O+hf9j55f7gfjuPnPEtg==', secret, GetCipherConfig(iv, 'ECB', 'Pkcs7').config).toString()).toBe(message)
+})
+
+test('Rabbit Test', () => {
+    const iv = 'testtest12345678'
+    const secret = 'testtest12345678'
+    const message = 'testtest12345678'
+    const encrypted = 'zMnn60lTofDyl7uaeC/Lew=='
+    expect(EncryptRabbit(message, secret, {iv: iv}).toString()).toBe(encrypted)
+    expect(DecryptRabbit(encrypted, secret, {iv: iv}).toString()).toBe(message)
+})
+
+test('RC4 Test', () => {
+    const iv = 'testtest12345678'
+    const secret = 'testtest12345678'
+    const message = 'testtest12345678'
+    const encrypted = 'iJLWgkZeiyZcI/K5tsNUUQ=='
+    expect(EncryptRC4(message, secret, {iv: iv}).toString()).toBe(encrypted)
+    expect(DecryptRC4(encrypted, secret, {iv: iv}).toString()).toBe(message)
+})
+
+test('Wrong Decrypt Source String Test', () => {
+    const encrypted = 'b0f2d213f49e45448aff1aaf10e30fed06adc9d6a572e0c65dfb02301cc13d94'
+    const iv = '1234testtest4567'
+    const key_128 = 'test1234test5678'
+    expect(() => {DecryptAES(encrypted, key_128, GetCipherConfig(iv, 'ECB', 'Iso97971').config)}).toThrowError('Malformed')
+    expect(() => {DecryptAES(encrypted, key_128, GetCipherConfig(iv, 'CBC', 'Pkcs7').config)}).toThrowError('Malformed')
+    expect(() => {DecryptRC4(encrypted, key_128, {iv: iv}).toString()}).toThrowError('Malformed')
+    expect(() => {DecryptTripleDES(encrypted, key_128, GetCipherConfig(iv, 'ECB', 'Pkcs7').config).toString()}).toThrowError('Malformed')
+    expect(() => {DecryptRabbit(encrypted, key_128, {iv: iv}).toString()}).toThrowError('Malformed')
+})
+

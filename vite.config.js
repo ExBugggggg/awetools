@@ -26,6 +26,8 @@ export default defineConfig({
     },
     test: {
         exclude: [...configDefaults.exclude, 'assets/regex.js'],
-        coverage: ['html']
+        coverage: {
+            reporter: ['html', 'text']   
+        }
     }
 })
