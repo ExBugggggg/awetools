@@ -21,10 +21,26 @@ const UnicodeToChinese = (source) => {
 }
 
 // Unicode convert to ASCII
-const UnicodeToASCII = (source) => {
+const XToChinese = (source) => {
     return source.replace(/(&#x)(\w{1,4});/gi, ($0) => {
-        return (String.fromCharCode(parseInt((encodeURIComponent($0).repalce(/(%26%23x)(\w{1,4})(%3B)/g, '$2')), 16)))
+        return (String.fromCharCode(parseInt((encodeURIComponent($0).replace(/(%26%23x)(\w{1,4})(%3B)/g, '$2')), 16)))
     })
+}
+
+const ChineseToX = (source) => {
+    let XString = ''
+    for (let character of source) {
+        XString += '&#x' + ((x) => x.length === 2 ? '00' + x : x)(parseInt(character.charCodeAt(0)).toString(16)) + ';'
+    }
+    return XString
+}
+
+const ChineseToASCII = (source) => {
+    let asciiString = ''
+    for (let character of source) {
+        asciiString += '&#' + (parseInt(character.charCodeAt(0))) + ';'
+    }
+    return asciiString
 }
 
 // ASCII convert to Chinese
@@ -37,10 +53,10 @@ const ASCIIToChinese = (source) => {
 // Chinese convert to Unicode
 const ChineseToUnicode = (source) => {
     let unicodeString = ''
-    for(let character of source){
-        if(/[\u4e00-\u9fa5]/.test(character)){
+    for (let character of source) {
+        if (/[\u4e00-\u9fa5]/.test(character)) {
             unicodeString += '\\u' + character.charCodeAt(0).toString(16)
-        }else{
+        } else {
             unicodeString += character
         }
     }
@@ -57,32 +73,34 @@ const Base64Decode = (source) => {
 }
 
 const InArray = (element, searchArray) => {
-    for(let i of searchArray){
-        if(element === i){
+    for (let i of searchArray) {
+        if (element === i) {
             return true
         }
     }
     return false
 }
 
-const IsMobile = () => {
+const IsMobileAgent = () => {
     return navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
 }
 
 const IsHex = (source) => {
-    return (/^[a-z0-9]+$/gi.test(source))
+    return (/^[a-f0-9]+$/gi.test(source))
 }
 
-export { 
+export {
     RedirectTo,
     OpenWindow,
     UnicodeToChinese,
     ChineseToUnicode,
     Base64Encode,
     Base64Decode,
-    UnicodeToASCII,
+    XToChinese,
+    ChineseToX,
     ASCIIToChinese,
+    ChineseToASCII,
     InArray,
-    IsMobile,
+    IsMobileAgent,
     IsHex
 }

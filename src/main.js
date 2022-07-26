@@ -3,13 +3,13 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import App from './App.vue'
 import router from './router'
-import { IsMobile } from '@assets/common'
+import { IsMobileAgent } from '@assets/common'
 
 router.beforeEach((to, from, next) => {
     if (to.meta.title) {
         document.title = 'Awesome Tools-' + to.meta.title
     }
-    if (IsMobile() && to.name !== 'mobile') {
+    if (IsMobileAgent() && to.name !== 'mobile') {
         next({ name: 'mobile' })
     } else next()
 })

@@ -36,7 +36,16 @@
     </el-row>
 </template>
 <script setup>
-import { ChineseToUnicode, UnicodeToChinese, Base64Encode, Base64Decode } from '@assets/common'
+import {
+    ChineseToUnicode,
+    UnicodeToChinese,
+    Base64Encode,
+    Base64Decode,
+    XToChinese,
+    ChineseToX,
+    ASCIIToChinese,
+    ChineseToASCII,
+} from '@assets/common'
 import { ref, onMounted } from 'vue'
 
 const convertOptions = ref([])
@@ -54,6 +63,14 @@ const characterConvert = () => {
         resultString.value = Base64Encode(sourceString.value)
     } else if (chooseOption.value === 3) {
         resultString.value = Base64Decode(sourceString.value)
+    } else if (chooseOption.value === 4) {
+        resultString.value = ChineseToASCII(sourceString.value)
+    } else if (chooseOption.value === 5) {
+        resultString.value = ASCIIToChinese(sourceString.value)
+    } else if (chooseOption.value === 6) {
+        resultString.value = ChineseToX(sourceString.value)
+    } else if (chooseOption.value === 7) {
+        resultString.value = XToChinese(sourceString.value)
     }
 }
 
@@ -74,6 +91,22 @@ onMounted(() => {
         {
             value: 3,
             label: 'Base64 Decode(UTF-8)'
+        },
+        {
+            value: 4,
+            label: 'Chinese To ASCII'
+        },
+        {
+            value: 5,
+            label: 'ASCII To Chinese'
+        },
+        {
+            value: 6,
+            label: 'Chinese To &#xXXXX'
+        },
+        {
+            value: 7,
+            label: '&#xXXXX To Chinese'
         }
     ]
 })
