@@ -2,7 +2,7 @@
     "documentation": [
         {
             "name": "UI Framework Documentation",
-            "keyword": ["ui"],
+            "tags": ["ui-framework"],
             "items": [
                 {
                     "name": "Boostrap 3",
@@ -24,7 +24,7 @@
         },
         {
             "name": "JavaScript Documentation",
-            "keyword": ["js"],
+            "tags": ["js"],
             "items": [
                 {
                     "name": "ECMAScript 2016",
@@ -38,7 +38,7 @@
         },
         {
             "name": "JavaScript Framework Documentation",
-            "keyword": ["js-framework"],
+            "tags": ["js-framework"],
             "items": [
                 {
                     "name": "jQuery",
@@ -68,7 +68,7 @@
         },
         {
             "name": "PHP Framework Documentation",
-            "keyword": ["php-framework"],
+            "tags": ["php-framework"],
             "items": [
                 {
                     "name": "Laravel",
@@ -102,7 +102,7 @@
         },
         {
             "name": "Language",
-            "keyword": ["language"],
+            "tags": ["language"],
             "items": [
                 {
                     "name": "PHP",
@@ -120,7 +120,7 @@
         },
         {
             "name": "Cross-Platform Development Framework Documentation",
-            "keyword": ["cross-plateform"],
+            "tags": ["cross-platform"],
             "items": [
                 {
                     "name": "Flutter",
