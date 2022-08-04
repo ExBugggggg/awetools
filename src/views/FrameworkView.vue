@@ -3,7 +3,7 @@
         <el-col :span="12" :offset="6">
             <el-row :gutter="24" justify="end">
                 <el-autocomplete style="width: 240px" clearable v-model="searchContent" placeholder="@name:bootstrap"
-                    :fetch-suggestions="getSuggestions" :trigger-on-focus="false">
+                    :fetch-suggestions="getSuggestions" :trigger-on-focus="false" @keydown.alt.enter.prevent="searchDocuments">
                     <template #default="{ item }">
                         <div class="value" style="font-family: Menlo, Monaco, Consolas, Andale Mono, lucida console, Courier New, monospace;">{{ item.value }}</div>
                     </template>

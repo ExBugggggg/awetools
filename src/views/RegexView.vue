@@ -3,6 +3,7 @@
         <el-col :span="16" :offset="4">
             <el-row :gutter="24" justify="end">
                 <el-button @click="commonRegexVisiable = true">Common Regex</el-button>
+                <el-button @click="codeGenerate">Code Generate</el-button>
                 <el-button style="margin-left: 8px" @click="regexTutorial = true">Regex Tutorial</el-button>
             </el-row>
 
@@ -161,13 +162,21 @@
                     </el-table>
                 </el-scrollbar>
             </el-dialog>
+            <el-dialog v-model="regexDemoGenerateVisiable">
+                <el-scrollbar>
+                    <h4>Javascript Code</h4>
+                    <CodePreview :language="useLanguage" :content="renderContent" style="margin-top: 24px"></CodePreview>
+                    <h4></h4>
+                </el-scrollbar>
+            </el-dialog>
         </el-col>
     </el-row>
 </template>
 <script setup>
 import { ref, watch, onMounted } from 'vue'
-import { RegexDescription, RegexDemonstration } from '@assets/regex'
+import { RegexDescription, RegexDemonstration, RegexCode } from '@assets/regex'
 import { RedirectTo } from '@assets/common'
+import CodePreview from '@components/CodePreview.vue'
 
 const regexPattern = ref('[0-9]+')
 const sourceString = ref('Address: 119.014232E, 25.45996W Email: HelloWorld@hw.com')
@@ -186,6 +195,7 @@ const direction = ref('rtl')
 const scrollbar = ref(0)
 const drawerSize = ref('40%')
 const commonRegexVisiable = ref(false)
+const regexDemoGenerateVisiable = ref(false)
 const characterClasses = RegexDescription.Regex.CharacterClasses.items
 const characterName = RegexDescription.Regex.CharacterClasses.name
 const anchors = RegexDescription.Regex.Anchors.items
@@ -194,6 +204,9 @@ const quantifiers = RegexDescription.Regex.Quantifiers.items
 const quantifiersName = RegexDescription.Regex.Quantifiers.name
 const reference = RegexDescription.Reference
 const regexDemonstrations = RegexDemonstration.items
+
+const useLanguage = ref('javascript')
+const renderContent = ref('console.log(\'helloworld\')')
 
 const anchor = (id) => {
     let card = document.getElementById(id)
@@ -259,6 +272,12 @@ const regex = () => {
 const regexChoose = (val) => {
     regexPattern.value = val.expression
     commonRegexVisiable.value = false
+}
+
+const codeGenerate = () => {
+    const regexCode = RegexCode('javascript', regexPattern.value, modifiersMap[modifiersIndex.value].key)
+    renderContent.value = regexCode.code
+    regexDemoGenerateVisiable.value = true
 }
 
 onMounted(() => {

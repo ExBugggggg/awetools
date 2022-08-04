@@ -254,4 +254,24 @@ const RegexDemonstration = {
         }
     ]
 }
-export { RegexDescription, RegexDemonstration }
+
+const RegexCode = (language, render, modifier) => {
+    if (language === 'javascript') {
+        return {
+            demo: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec',
+            code:`
+const pattern = new RegExp('${render}', '${modifier}');
+const str='a string for test';
+let result;
+while ((result = pattern.exec(str)) !== null) {
+    console.log('Found' + result[0]);
+}
+`
+        }
+    }
+    if (language === 'python') {
+        return ''
+    }
+}
+    
+export { RegexDescription, RegexDemonstration, RegexCode}

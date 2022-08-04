@@ -4,8 +4,8 @@
             <el-row :gutter="24" justify="start">
                 <el-col :span="12" style="padding-left: 0px">
                     <el-form label-position="top" :model="encryptOptions" :inline="true">
-                        <el-form-item label="Encrypt Method">
-                            <el-select v-model="encryptOptions.encryptMethod" filterable @change="encryptOptionChange">
+                        <el-form-item label="Encrypt/Decrypt/Hash Method">
+                            <el-select v-model="encryptOptions.encryptMethod" filterable @change="setComponentsStatus">
                                 <el-option v-for="encryptMethod in encryptMethods" :key="encryptMethod.value"
                                     :label="encryptMethod.label" :value="encryptMethod.value"
                                     style="font-family: Menlo, Monaco, Consolas, Andale Mono, lucida console, Courier New, monospace;">
@@ -20,9 +20,9 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="Encrypt Mode">
+                        <el-form-item label="Encrypt/Decrypt Mode">
                             <el-select v-model="encryptOptions.encryptMode" :disabled="modeAndPaddingDisabled"
-                                @change="encryptOptionChange">
+                                @change="setComponentsStatus">
                                 <el-option v-for="EncryptModeOption in EncryptModeOptions"
                                     :key="EncryptModeOption.value" :label="EncryptModeOption.label"
                                     :value="EncryptModeOption.value"
@@ -30,9 +30,9 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="Encrypt Padding">
+                        <el-form-item label="Encrypt/Decrypt Padding">
                             <el-select v-model="encryptOptions.encryptPadding" :disabled="modeAndPaddingDisabled"
-                                @change="encryptOptionChange">
+                                @change="setComponentsStatus">
                                 <el-option v-for="EncryptPaddingOption in EncryptPaddingOptions"
                                     :key="EncryptPaddingOption.value" :label="EncryptPaddingOption.label"
                                     :value="EncryptPaddingOption.value"
@@ -142,21 +142,25 @@ const encryptOptions = ref({
     iv: '',
     displayMode: 0
 })
-
 const EncryptModeOptions = ref([])
 const EncryptPaddingOptions = ref([])
-const modeAndPaddingDisabled = ref(true)
-
 const outputOptions = ref([])
-const outputDisabled = ref(true)
 
+const modeAndPaddingDisabled = ref(true)
+const outputDisabled = ref(true)
 const secretDisabled = ref(true)
 const decryptDisabled = ref(true)
 const ivDisabled = ref(true)
 const displayModeDisabled = ref(false)
 
-const encryptOptionChange = () => {
+/**
+ * @author Hanhui Wu <admin@fixbugs.cn>
+ * @function setComponentsStatus
+ * @Description Change components status
+ */
+const setComponentsStatus = () => {
     let encryptMethod = encryptOptions.value.encryptMethod
+    // output length disabled
     if (InArray(encryptMethod, ['SHA3', 'HmacSHA3', 'Keccak'])) {
         outputDisabled.value = false
     } else {
@@ -194,6 +198,11 @@ const encryptOptionChange = () => {
     }
 }
 
+/**
+ * @author Hanhui Wu <admin@fixbugs.cn>
+ * @function encrypt
+ * @Description Encrypt string or hash
+ */
 const encrypt = () => {
     const encryptObject = encryptOptions.value
 
@@ -287,16 +296,21 @@ const encrypt = () => {
     }
 }
 
+/** 
+ * @author Hanhui Wu <admin@fixbugs.cn>
+ * @function decrypt
+ * @description Decrypt encrypted string
+ */
 const decrypt = () => {
-    const encryptObject = encryptOptions.value
+    const decryptObject = encryptOptions.value
 
-    let encryptMethod = encryptObject.encryptMethod
-    let secret = encryptObject.secret
-    let encryptMode = encryptObject.encryptMode
-    let encryptPadding = encryptObject.encryptPadding
-    let iv = encryptObject.iv
+    let decryptMethod = decryptObject.encryptMethod
+    let secret = decryptObject.secret
+    let decryptMode = decryptObject.encryptMode
+    let decryptPadding = decryptObject.encryptPadding
+    let iv = decryptObject.iv
 
-    let config = GetCipherConfig(iv, encryptMode, encryptPadding)
+    let config = GetCipherConfig(iv, decryptMode, decryptPadding)
     if (!secret) {
         ElMessage.error('No secret')
         return
@@ -306,7 +320,7 @@ const decrypt = () => {
         ElMessage.error('No message need to decrypt')
         return
     }
-    switch (encryptMethod) {
+    switch (decryptMethod) {
     case 'AES':
         try {
             if (config.code === 0) {
@@ -344,17 +358,19 @@ const decrypt = () => {
         }
         break
     default:
-        ElMessage.error('No encrypt method: ${encryptMethod}')
+        ElMessage.error(`No encrypt method: ${decryptMethod}`)
         return
     }
 }
 
 onMounted(() => {
+    // Assign value
     encryptMethods.value = EncryptMethods
     outputOptions.value = OutputOptions
     EncryptModeOptions.value = EncryptMode
     EncryptPaddingOptions.value = EncryptPadding
-    encryptOptionChange()
+    // Initialize components status
+    setComponentsStatus()
 })
 </script>
 <style scoped>
