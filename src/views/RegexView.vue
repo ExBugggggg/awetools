@@ -2,8 +2,14 @@
     <el-row :gutter="24">
         <el-col :span="16" :offset="4">
             <el-row :gutter="24" justify="end">
+                <el-select placeholder="select language" v-model="useLanguage" @change="codeGenerate" clearable>
+                    <el-option v-for="supportLanguage in supportLanguages" :key="supportLanguage.value"
+                        :label="supportLanguage.label" :value="supportLanguage.value"
+                        style="font-family: Menlo, Monaco, Consolas, Andale Mono, lucida console, Courier New, monospace;">
+                    </el-option>
+                </el-select>
+                <el-button @click="showCodeGeneration" style="margin-right: 16px; margin-left: 8px;">Go Generation</el-button>
                 <el-button @click="commonRegexVisiable = true">Common Regex</el-button>
-                <el-button @click="codeGenerate">Code Generate</el-button>
                 <el-button style="margin-left: 8px" @click="regexTutorial = true">Regex Tutorial</el-button>
             </el-row>
 
@@ -164,9 +170,23 @@
             </el-dialog>
             <el-dialog v-model="regexDemoGenerateVisiable">
                 <el-scrollbar>
-                    <h4>Javascript Code</h4>
-                    <CodePreview :language="useLanguage" :content="renderContent" style="margin-top: 24px"></CodePreview>
-                    <h4></h4>
+                    <h4>{{useLanguage}} Code</h4>
+                    <el-row justify="end">
+                        <el-tooltip content="Copy to clipboard" placement="top">
+                            <el-button link type="primary">
+                                <el-icon>
+                                    <DocumentCopy />
+                                </el-icon>
+                            </el-button>
+                        </el-tooltip>
+                    </el-row>
+                    <CodePreview :language="useLanguage" :content="renderContent" style="margin-top: 8px"></CodePreview>
+                    <el-link href="{{ demoReference }}" style="margin-top: 16px">
+                        <el-icon class="el-icon--left">
+                            <Link />
+                        </el-icon>
+                        <h4>Reference</h4>
+                    </el-link>
                 </el-scrollbar>
             </el-dialog>
         </el-col>
@@ -174,7 +194,7 @@
 </template>
 <script setup>
 import { ref, watch, onMounted } from 'vue'
-import { RegexDescription, RegexDemonstration, RegexCode } from '@assets/regex'
+import { RegexDescription, RegexDemonstration, RegexCode, RegexDemoSupportLanguages } from '@assets/regex'
 import { RedirectTo } from '@assets/common'
 import CodePreview from '@components/CodePreview.vue'
 
@@ -205,8 +225,10 @@ const quantifiersName = RegexDescription.Regex.Quantifiers.name
 const reference = RegexDescription.Reference
 const regexDemonstrations = RegexDemonstration.items
 
-const useLanguage = ref('javascript')
-const renderContent = ref('console.log(\'helloworld\')')
+const useLanguage = ref('JavaScript')
+const renderContent = ref('console.log(\'hello world\')')
+const demoReference = ref('')
+const supportLanguages = RegexDemoSupportLanguages
 
 const anchor = (id) => {
     let card = document.getElementById(id)
@@ -221,7 +243,6 @@ watch([regexPattern, sourceString], ([regexPattern_nv, sourceString_nv], [regexP
     if (regexPattern_nv !== regexPattern_ov || sourceString_nv !== sourceString_ov) {
         regex()
     }
-
 })
 
 const redirectTo = () => {
@@ -275,8 +296,13 @@ const regexChoose = (val) => {
 }
 
 const codeGenerate = () => {
-    const regexCode = RegexCode('javascript', regexPattern.value, modifiersMap[modifiersIndex.value].key)
+    const regexCode = RegexCode(useLanguage.value, regexPattern.value, modifiersMap[modifiersIndex.value].key)
     renderContent.value = regexCode.code
+    demoReference.value = regexCode.demoUrl
+}
+
+const showCodeGeneration = () => {
+    codeGenerate()
     regexDemoGenerateVisiable.value = true
 }
 

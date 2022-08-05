@@ -256,9 +256,9 @@ const RegexDemonstration = {
 }
 
 const RegexCode = (language, render, modifier) => {
-    if (language === 'javascript') {
+    if (language === 'JavaScript') {
         return {
-            demo: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec',
+            demoUrl: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec',
             code:`
 const pattern = new RegExp('${render}', '${modifier}');
 const str='a string for test';
@@ -268,10 +268,48 @@ while ((result = pattern.exec(str)) !== null) {
 }
 `
         }
-    }
-    if (language === 'python') {
-        return ''
+    } else if (language === 'Python') {
+        if (modifier === 'i' || modifier === 'gi') {
+            modifier = ', re.I'
+        }else if (modifier === 's') {
+            modifier = ''
+        }else{
+            modifier = ''
+        }
+        return {
+            demoUrl: 'https://docs.python.org/3/library/re.html',
+            code: `
+import re
+
+for m in re.finditer(r'${render}', 'a string for test'${modifier}):
+    print(m.start(), m.end(), m.group(0))
+`
+        }
+    } else {
+        return {
+            demoUrl: '',
+            code: ''
+        }
     }
 }
+
+const RegexDemoSupportLanguages = [
+    {
+        value: 'JavaScript',
+        label: 'JavaScript'
+    },
+    {
+        value: 'Python',
+        label: 'Python'
+    },
+    {
+        value: 'Java',
+        label: 'Java'
+    },
+    {
+        value: 'Golang',
+        label: 'Golang'
+    }
+]
     
-export { RegexDescription, RegexDemonstration, RegexCode}
+export { RegexDescription, RegexDemonstration, RegexCode, RegexDemoSupportLanguages}
