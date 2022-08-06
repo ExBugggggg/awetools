@@ -8,7 +8,8 @@
                         style="font-family: Menlo, Monaco, Consolas, Andale Mono, lucida console, Courier New, monospace;">
                     </el-option>
                 </el-select>
-                <el-button @click="showCodeGeneration" style="margin-right: 16px; margin-left: 8px;">Go Generation</el-button>
+                <el-button @click="showCodeGeneration" style="margin-right: 16px; margin-left: 8px;">Go Generation
+                </el-button>
                 <el-button @click="commonRegexVisiable = true">Common Regex</el-button>
                 <el-button style="margin-left: 8px" @click="regexTutorial = true">Regex Tutorial</el-button>
             </el-row>
@@ -145,7 +146,8 @@
                                     Reference
                                 </el-button>
                             </template>
-                            <el-link type="primary" @click="redirectTo()">Regular Expression Language - Quick
+                            <el-link type="primary" @click="redirectTo(regexReference)">Regular Expression Language -
+                                Quick
                                 Reference</el-link>
                         </el-card>
                         <el-row style="margin-top: 80px"></el-row>
@@ -168,9 +170,9 @@
                     </el-table>
                 </el-scrollbar>
             </el-dialog>
-            <el-dialog v-model="regexDemoGenerateVisiable">
+            <el-dialog v-model="regexDemoGenerateVisiable" @closed="destoryEditor">
                 <el-scrollbar>
-                    <h4>{{useLanguage}} Code</h4>
+                    <h4>{{ useLanguage }} Code</h4>
                     <el-row justify="end">
                         <el-tooltip content="Copy to clipboard" placement="top">
                             <el-button link type="primary">
@@ -180,8 +182,8 @@
                             </el-button>
                         </el-tooltip>
                     </el-row>
-                    <CodePreview :language="useLanguage" :content="renderContent" style="margin-top: 8px"></CodePreview>
-                    <el-link href="{{ demoReference }}" style="margin-top: 16px">
+                    <CodeDisplay :language="useLanguage" :defaultValue="renderContent" :editorHeight="60" ref="codeDisplayFunction"></CodeDisplay>
+                    <el-link style="margin-top: 16px" @click.prevent="">
                         <el-icon class="el-icon--left">
                             <Link />
                         </el-icon>
@@ -196,10 +198,10 @@
 import { ref, watch, onMounted } from 'vue'
 import { RegexDescription, RegexDemonstration, RegexCode, RegexDemoSupportLanguages } from '@assets/regex'
 import { RedirectTo } from '@assets/common'
-import CodePreview from '@components/CodePreview.vue'
+import CodeDisplay from '@components/CodeDisplay.vue'
 
 const regexPattern = ref('[0-9]+')
-const sourceString = ref('Address: 119.014232E, 25.45996W Email: HelloWorld@hw.com')
+const sourceString = ref('Address: 119.014232E, 25.45996W Email: hello@world.com')
 const resultString = ref('No Match Content')
 const modifiersMap = [
     { key: 'g', value: 0 },
@@ -222,13 +224,15 @@ const anchors = RegexDescription.Regex.Anchors.items
 const anchorsName = RegexDescription.Regex.Anchors.name
 const quantifiers = RegexDescription.Regex.Quantifiers.items
 const quantifiersName = RegexDescription.Regex.Quantifiers.name
-const reference = RegexDescription.Reference
+const regexReference = RegexDescription.Reference
 const regexDemonstrations = RegexDemonstration.items
 
-const useLanguage = ref('JavaScript')
+const useLanguage = ref('javascript')
 const renderContent = ref('console.log(\'hello world\')')
 const demoReference = ref('')
 const supportLanguages = RegexDemoSupportLanguages
+
+const codeDisplayFunction = ref(null)
 
 const anchor = (id) => {
     let card = document.getElementById(id)
@@ -245,8 +249,8 @@ watch([regexPattern, sourceString], ([regexPattern_nv, sourceString_nv], [regexP
     }
 })
 
-const redirectTo = () => {
-    RedirectTo(reference)
+const redirectTo = (redirectUrl) => {
+    RedirectTo(redirectUrl)
 }
 
 const previewDescription = (text) => {
@@ -304,6 +308,10 @@ const codeGenerate = () => {
 const showCodeGeneration = () => {
     codeGenerate()
     regexDemoGenerateVisiable.value = true
+}
+
+const destoryEditor = () => {
+    codeDisplayFunction.value.destoryEditor()
 }
 
 onMounted(() => {

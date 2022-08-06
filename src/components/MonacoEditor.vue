@@ -2,13 +2,10 @@
     <div id="editor" :style="{ height: editorHeight + 'vh' }"></div>
 </template>
 
-<script>
-export default {
-    name: 'MonacoEditor'
-}
-</script>
-
 <script setup>
+/**
+ * @description This is a monaco-editor component that can give you suggestion when you input your code.
+ */
 import * as monaco from 'monaco-editor'
 import { onMounted, ref, onBeforeMount } from 'vue'
 import { UnicodeToChinese } from '@assets/common'

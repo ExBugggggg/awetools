@@ -259,7 +259,7 @@ const RegexCode = (language, render, modifier) => {
     if (language === 'JavaScript') {
         return {
             demoUrl: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec',
-            code:`
+            code: `
 const pattern = new RegExp('${render}', '${modifier}');
 const str='a string for test';
 let result;
@@ -271,9 +271,9 @@ while ((result = pattern.exec(str)) !== null) {
     } else if (language === 'Python') {
         if (modifier === 'i' || modifier === 'gi') {
             modifier = ', re.I'
-        }else if (modifier === 's') {
+        } else if (modifier === 's') {
             modifier = ''
-        }else{
+        } else {
             modifier = ''
         }
         return {
@@ -295,21 +295,21 @@ for m in re.finditer(r'${render}', 'a string for test'${modifier}):
 
 const RegexDemoSupportLanguages = [
     {
-        value: 'JavaScript',
+        value: 'javascript',
         label: 'JavaScript'
     },
     {
-        value: 'Python',
+        value: 'python',
         label: 'Python'
     },
     {
-        value: 'Java',
+        value: 'java',
         label: 'Java'
     },
     {
-        value: 'Golang',
+        value: 'golang',
         label: 'Golang'
     }
 ]
-    
-export { RegexDescription, RegexDemonstration, RegexCode, RegexDemoSupportLanguages}
+
+export { RegexDescription, RegexDemonstration, RegexCode, RegexDemoSupportLanguages }
