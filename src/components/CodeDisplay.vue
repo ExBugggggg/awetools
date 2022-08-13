@@ -1,39 +1,27 @@
 <template>
-    <div id="showCode" :style="{ height: editorHeight + 'vh' }"></div>
+    <div style="background-color: #f5f2f0;">
+        <el-row v-if="needCopy" justify="end" style="margin-right: 32px; padding-top: 16px">
+            <el-tooltip content="Copy to clipboard" placement="top">
+                <el-button link type="primary" data-clipboard-target="#codeContent" data-clipboard-action="copy">
+                    <el-icon>
+                        <DocumentCopy />
+                    </el-icon>
+                </el-button>
+            </el-tooltip>
+        </el-row>
+        <pre><code style="line-height: 24px;"><div id="codeContent" v-html="renderHtml" style="margin-left: 24px;"></div></code></pre>
+    </div>
 </template>
-
 <script setup>
-import * as monaco from 'monaco-editor'
-import { onMounted, ref, onBeforeMount } from 'vue'
-import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
+// todo: finish clipboard function
+import Prism from 'prismjs'
+// import Clipboard from 'clipboard'
 
-const props = defineProps(['language', 'defaultValue', 'editorHeight'])
-let monacoEditor = null
-let editorHeight = ref(60)
+import { onMounted, ref } from 'vue'
+const props = defineProps(['language', 'defaultValue', 'needCopy'])
 
-
-self.MonacoEnvironment = {
-    getWorker() {
-        return new editorWorker()
-    }
-}
-
-
-onBeforeMount(() => {
-    editorHeight.value = props.editorHeight
-})
-
+const renderHtml = ref('')
 onMounted(() => {
-    const model = monaco.editor.createModel(props.defaultValue, props.language)
-    monacoEditor = monaco.editor.create(document.getElementById('showCode'), {
-        model: model
-    })
+    renderHtml.value = Prism.highlight(props.defaultValue, Prism.languages.javascript, props.language)
 })
-
-const destoryEditor = () => {
-    monacoEditor.dispose()
-}
-
-
-defineExpose({ destoryEditor })
 </script>

@@ -170,20 +170,16 @@
                     </el-table>
                 </el-scrollbar>
             </el-dialog>
-            <el-dialog v-model="regexDemoGenerateVisiable" @closed="destoryEditor">
+            <el-dialog v-model="regexDemoGenerateVisiable">
                 <el-scrollbar>
-                    <h4>{{ useLanguage }} Code</h4>
-                    <el-row justify="end">
-                        <el-tooltip content="Copy to clipboard" placement="top">
-                            <el-button link type="primary">
-                                <el-icon>
-                                    <DocumentCopy />
-                                </el-icon>
-                            </el-button>
-                        </el-tooltip>
-                    </el-row>
-                    <CodeDisplay :language="useLanguage" :defaultValue="renderContent" :editorHeight="60" ref="codeDisplayFunction"></CodeDisplay>
-                    <el-link style="margin-top: 16px" @click.prevent="">
+                    <el-link style="margin-top: 16px">
+                        <el-icon class="el-icon--left">
+                            <CoffeeCup />
+                        </el-icon>
+                        <h4>Code</h4>
+                    </el-link>
+                    <CodeDisplay :language="useLanguage" :defaultValue="renderContent" :needCopy="true" style="margin: 24px 16px;"></CodeDisplay>
+                    <el-link>
                         <el-icon class="el-icon--left">
                             <Link />
                         </el-icon>
@@ -231,8 +227,6 @@ const useLanguage = ref('javascript')
 const renderContent = ref('console.log(\'hello world\')')
 const demoReference = ref('')
 const supportLanguages = RegexDemoSupportLanguages
-
-const codeDisplayFunction = ref(null)
 
 const anchor = (id) => {
     let card = document.getElementById(id)
@@ -310,9 +304,6 @@ const showCodeGeneration = () => {
     regexDemoGenerateVisiable.value = true
 }
 
-const destoryEditor = () => {
-    codeDisplayFunction.value.destoryEditor()
-}
 
 onMounted(() => {
     regex()

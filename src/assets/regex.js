@@ -256,7 +256,8 @@ const RegexDemonstration = {
 }
 
 const RegexCode = (language, render, modifier) => {
-    if (language === 'JavaScript') {
+    language = language.toLowerCase()
+    if (language === 'javascript') {
         return {
             demoUrl: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec',
             code: `
@@ -268,7 +269,7 @@ while ((result = pattern.exec(str)) !== null) {
 }
 `
         }
-    } else if (language === 'Python') {
+    } else if (language === 'python') {
         if (modifier === 'i' || modifier === 'gi') {
             modifier = ', re.I'
         } else if (modifier === 's') {

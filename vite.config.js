@@ -12,7 +12,8 @@ export default defineConfig({
             prismjs({
                 languages: ['js', 'json', 'python', 'java'],
                 css: true,
-                theme: 'default'
+                theme: 'default',
+                plugins: ['line-numbers']
             })
         ]
     ],
