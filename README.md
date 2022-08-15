@@ -18,7 +18,7 @@ Development Environment: `node(14.19.1)`,`npm(6.14.16)`
 ```JSON
 {
     "name": "Demo",
-    "keyword": ["demo"],
+    "tags": ["demo"],
     "items": [
         {
             "name":  "documentation name",

@@ -1,6 +1,7 @@
 <template>
     <el-row :gutter="24">
         <el-col :span="16" :offset="4">
+
             <el-row :gutter="24" justify="end">
                 <el-select placeholder="select language" v-model="useLanguage" @change="codeGenerate" clearable>
                     <el-option v-for="supportLanguage in supportLanguages" :key="supportLanguage.value"
@@ -42,6 +43,7 @@
                 <el-input v-model="resultString" placeholder="" style="margin-top: 24px;" type="textarea"
                     :autosize="{ minRows: 10, maxRows: 10 }" readonly="readonly"></el-input>
             </el-row>
+            
             <el-drawer v-model="regexTutorial" title="Regex Tutorial" :direction="direction" :size="drawerSize">
                 <template #header>
                     <h4>Regex Tutorial</h4>
@@ -154,6 +156,7 @@
                     </el-scrollbar>
                 </template>
             </el-drawer>
+            
             <el-dialog v-model="commonRegexVisiable">
                 <el-scrollbar>
                     <el-table :data="regexDemonstrations" max-height="512" width="100%" @current-change="regexChoose">
@@ -170,6 +173,7 @@
                     </el-table>
                 </el-scrollbar>
             </el-dialog>
+            
             <el-dialog v-model="regexDemoGenerateVisiable">
                 <el-scrollbar>
                     <el-link style="margin-top: 16px">
@@ -178,8 +182,10 @@
                         </el-icon>
                         <h4>Code</h4>
                     </el-link>
-                    <CodeDisplay :language="useLanguage" :defaultValue="renderContent" :needCopy="true" style="margin: 24px 16px;"></CodeDisplay>
-                    <el-link>
+                    <el-row>
+                        <el-input type="textarea" v-model="renderContent" style="margin: 24px 16px;" :autosize="{ minRows: 2, maxRows: 20 }"></el-input>
+                    </el-row>
+                    <el-link :href="demoReference" target="_blank">
                         <el-icon class="el-icon--left">
                             <Link />
                         </el-icon>
@@ -194,7 +200,6 @@
 import { ref, watch, onMounted } from 'vue'
 import { RegexDescription, RegexDemonstration, RegexCode, RegexDemoSupportLanguages } from '@assets/regex'
 import { RedirectTo } from '@assets/common'
-import CodeDisplay from '@components/CodeDisplay.vue'
 
 const regexPattern = ref('[0-9]+')
 const sourceString = ref('Address: 119.014232E, 25.45996W Email: hello@world.com')

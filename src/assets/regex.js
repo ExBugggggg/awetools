@@ -255,20 +255,20 @@ const RegexDemonstration = {
     ]
 }
 
-const RegexCode = (language, render, modifier) => {
+const RegexCode = (language, regexString, modifier) => {
     language = language.toLowerCase()
+    var matchMethod = ''
     if (language === 'javascript') {
         return {
             demoUrl: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec',
-            code: `
-const pattern = new RegExp('${render}', '${modifier}');
+            code: `// JavaScript Regex
+
+const pattern = new RegExp('${regexString}', '${modifier}');
 const str='a string for test';
 let result;
 while ((result = pattern.exec(str)) !== null) {
     console.log('Found' + result[0]);
-}
-`
-        }
+}`}
     } else if (language === 'python') {
         if (modifier === 'i' || modifier === 'gi') {
             modifier = ', re.I'
@@ -279,17 +279,102 @@ while ((result = pattern.exec(str)) !== null) {
         }
         return {
             demoUrl: 'https://docs.python.org/3/library/re.html',
-            code: `
+            code: `# Python Regex
+
 import re
 
-for m in re.finditer(r'${render}', 'a string for test'${modifier}):
+for m in re.finditer(r'${regexString}', 'a string for test'${modifier}):
     print(m.start(), m.end(), m.group(0))
+`
+        }
+    } else if (language === 'php') {
+        if (modifier === 'g' || modifier === 'gi') {
+            matchMethod = 'preg_match_all'
+        } else {
+            matchMethod = 'preg_match'
+        }
+        if (modifier === 'i' || modifier === 'gi') {
+            modifier = 'i'
+        } else {
+            modifier = ''
+        }
+        return {
+            demoUrl: 'https://www.php.net/manual/en/ref.pcre.php',
+            code: `// PHP Regex
+
+${matchMethod}('/${regexString}/${modifier}', 'a string for test', $matches);
+print_r($matches)
+`
+        }
+    } else if (language === 'java') {
+        if (modifier === 'g' || modifier === 'gi') {
+            matchMethod = 'while'
+        } else {
+            matchMethod = 'if'
+        }
+        if (modifier === 'i' || modifier === 'gi') {
+            modifier = ', Pattern.CASE_INSENSITIVE'
+        } else {
+            modifier = ''
+        }
+
+        return {
+            demoUrl: 'https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/regex/package-summary.html',
+            code: `// Java Regex
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Main
+{
+    public static void main (String[] args) {
+        String source = "a string for test";
+        String pattern = "${regexString}";
+
+        Pattern r = Pattern.compile(pattern${modifier});
+
+        Matcher m = r.matcher(source);
+        ${matchMethod} (m.find()) {
+            System.out.println(m.group());
+        }
+    }
+}
+`
+        }
+    } else if (language === 'golang') {
+        let appendArgument = ''
+        if (modifier === 'g' || modifier === 'gi') {
+            matchMethod = 'FindAll'
+            appendArgument = ', -1'
+        } else {
+            matchMethod = 'Find'
+        }
+        if (modifier === 'i' || modifier === 'gi') {
+            modifier = '(?i)'
+        } else {
+            modifier = ''
+        }
+        return {
+            demoUrl: 'https://golang.google.cn/pkg/regexp',
+            code: `// Golang Regex
+
+package main
+
+import (
+    "fmt"
+    "regexp"
+)
+
+func main() {
+    re := regexp.MustCompile(\`${modifier}${regexString}\`)
+    fmt.Printf("%q\\n", re.${matchMethod}([]byte(\`This is a test.\`)${appendArgument}))
+}
 `
         }
     } else {
         return {
             demoUrl: '',
-            code: ''
+            code: `// Not Support ${language} Now.`
         }
     }
 }
@@ -310,6 +395,10 @@ const RegexDemoSupportLanguages = [
     {
         value: 'golang',
         label: 'Golang'
+    },
+    {
+        value: 'php',
+        label: 'PHP'
     }
 ]
 
