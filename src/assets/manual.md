@@ -1,6 +1,6 @@
 # Manual and Help
 
-> *This is a tool for programmer to deal with some problems.* 😊
+> *This is a tool for programmers to deal with some problems during development.* 😊
 
 ### Shortcut Key
 
@@ -9,7 +9,7 @@
 
 ### Some Tips
 
-1. In `Hash & Symmetrical Encryption` module. If you discover some problems about why the result that provided from this tool is different from mine, i think you maybe need to know something about `Hash` and `Symmetrical Encryption` algorithms before you use it.
+1. In `Hash & Symmetrical Encryption` module. If you discover some problems about why the result that provided from this tool is different from mine, i think you may be should know something about `Hash` and `Symmetrical Encryption` algorithms before you use it.
 
 ### Feature
 
