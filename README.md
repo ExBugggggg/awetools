@@ -36,11 +36,10 @@ Development Environment: `node(14.19.1)`,`npm(6.14.16)`
 4. `js-base64`
 5. `js-sha3`
 6. `monaco-editor`
-7. `prismjs`
-8. `vue`
-9. `vue-router`
-10. `github-markdown-css`
-11. `marked`
+7. `vue`
+8. `vue-router`
+9. `github-markdown-css`
+10. `marked`
 
 #### Version
 
