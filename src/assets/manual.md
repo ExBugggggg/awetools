@@ -13,7 +13,7 @@
 
 ### Feature
 
-##### 0.0.2 Beta Released before 2022/9/30
+##### 0.0.2 Beta 22/8/16
 > * Add a code generator in `Regex Validator` module.
 > * Add `switch` button to help user to switch option quickly in `Encode & Decode` module. 
 > * Add a function when you enter some words for searching something you want in `Framework Documentation` module.
