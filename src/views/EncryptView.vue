@@ -78,7 +78,7 @@
                     <el-row>
                         <h4 style="color: #2F4F4F">Source</h4>
                         <el-input type="textarea" :rows="16" v-model="sourceString" style="margin-top: 16px"
-                            placeholder="Source content..."></el-input>
+                            @keydown.alt.enter.prevent="encrypt" @keydown.alt.delete.prevent="decrypt" placeholder="Source content..."></el-input>
                     </el-row>
                 </el-col>
                 <el-col :span="12">
