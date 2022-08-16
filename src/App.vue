@@ -24,7 +24,11 @@
                         <el-scrollbar ref="scrollbar">
                             <div v-for="quickAccessItem of quickAccessItems" :key="quickAccessItem.name">
                                 <el-row style="margin-top: 8px">
-                                    <el-button link type="primary" style="font-size:large; color: #2F4F4F; text-decoration: underline;" @click="redirectTo(quickAccessItem.pageName)">{{quickAccessItem.index + '. ' + quickAccessItem.name }}</el-button>
+                                    <el-button link type="primary"
+                                        style="font-size:large; color: #2F4F4F; text-decoration: underline;"
+                                        @click="redirectTo(quickAccessItem.pageName)">{{ quickAccessItem.index + '. ' +
+                                                quickAccessItem.name
+                                        }}</el-button>
                                 </el-row>
                             </div>
                         </el-scrollbar>
@@ -35,7 +39,7 @@
                         <h4>Awesome-Tools Setting</h4>
                     </template>
                     <template #default>
-                        <el-empty description="This function will be released in the future." :image-size="200"/>
+                        <el-empty description="This function will be released in the future." :image-size="200" />
                     </template>
                     <template #footer>
                     </template>
@@ -50,14 +54,14 @@
                 </el-dialog>
             </el-main>
             <el-footer style="padding: 0px">
-                
+
             </el-footer>
         </el-container>
     </div>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue'
-import { RedirectTo} from '@assets/common'
+import { RedirectTo } from '@assets/common'
 import configuration from '@assets/configuration.json'
 import { useRouter } from 'vue-router'
 

@@ -1,7 +1,16 @@
 <template>
     <el-row :gutter="24">
         <el-col :span="16" :offset="4">
+
             <el-row :gutter="24" justify="end">
+                <el-select placeholder="select language" v-model="useLanguage" @change="codeGenerate" clearable>
+                    <el-option v-for="supportLanguage in supportLanguages" :key="supportLanguage.value"
+                        :label="supportLanguage.label" :value="supportLanguage.value"
+                        style="font-family: Menlo, Monaco, Consolas, Andale Mono, lucida console, Courier New, monospace;">
+                    </el-option>
+                </el-select>
+                <el-button @click="showCodeGeneration" style="margin-right: 16px; margin-left: 8px;">Go Generation
+                </el-button>
                 <el-button @click="commonRegexVisiable = true">Common Regex</el-button>
                 <el-button style="margin-left: 8px" @click="regexTutorial = true">Regex Tutorial</el-button>
             </el-row>
@@ -34,6 +43,7 @@
                 <el-input v-model="resultString" placeholder="" style="margin-top: 24px;" type="textarea"
                     :autosize="{ minRows: 10, maxRows: 10 }" readonly="readonly"></el-input>
             </el-row>
+            
             <el-drawer v-model="regexTutorial" title="Regex Tutorial" :direction="direction" :size="drawerSize">
                 <template #header>
                     <h4>Regex Tutorial</h4>
@@ -138,13 +148,15 @@
                                     Reference
                                 </el-button>
                             </template>
-                            <el-link type="primary" @click="redirectTo()">Regular Expression Language - Quick
+                            <el-link type="primary" @click="redirectTo(regexReference)">Regular Expression Language -
+                                Quick
                                 Reference</el-link>
                         </el-card>
                         <el-row style="margin-top: 80px"></el-row>
                     </el-scrollbar>
                 </template>
             </el-drawer>
+            
             <el-dialog v-model="commonRegexVisiable">
                 <el-scrollbar>
                     <el-table :data="regexDemonstrations" max-height="512" width="100%" @current-change="regexChoose">
@@ -161,16 +173,36 @@
                     </el-table>
                 </el-scrollbar>
             </el-dialog>
+            
+            <el-dialog v-model="regexDemoGenerateVisiable">
+                <el-scrollbar>
+                    <el-link style="margin-top: 16px">
+                        <el-icon class="el-icon--left">
+                            <CoffeeCup />
+                        </el-icon>
+                        <h4>Code</h4>
+                    </el-link>
+                    <el-row>
+                        <el-input type="textarea" v-model="renderContent" style="margin: 24px 16px;" :autosize="{ minRows: 2, maxRows: 20 }"></el-input>
+                    </el-row>
+                    <el-link :href="demoReference" target="_blank">
+                        <el-icon class="el-icon--left">
+                            <Link />
+                        </el-icon>
+                        <h4>Reference</h4>
+                    </el-link>
+                </el-scrollbar>
+            </el-dialog>
         </el-col>
     </el-row>
 </template>
 <script setup>
 import { ref, watch, onMounted } from 'vue'
-import { RegexDescription, RegexDemonstration } from '@assets/regex'
+import { RegexDescription, RegexDemonstration, RegexCode, RegexDemoSupportLanguages } from '@assets/regex'
 import { RedirectTo } from '@assets/common'
 
 const regexPattern = ref('[0-9]+')
-const sourceString = ref('Address: 119.014232E, 25.45996W Email: HelloWorld@hw.com')
+const sourceString = ref('Address: 119.014232E, 25.45996W Email: hello@world.com')
 const resultString = ref('No Match Content')
 const modifiersMap = [
     { key: 'g', value: 0 },
@@ -186,14 +218,20 @@ const direction = ref('rtl')
 const scrollbar = ref(0)
 const drawerSize = ref('40%')
 const commonRegexVisiable = ref(false)
+const regexDemoGenerateVisiable = ref(false)
 const characterClasses = RegexDescription.Regex.CharacterClasses.items
 const characterName = RegexDescription.Regex.CharacterClasses.name
 const anchors = RegexDescription.Regex.Anchors.items
 const anchorsName = RegexDescription.Regex.Anchors.name
 const quantifiers = RegexDescription.Regex.Quantifiers.items
 const quantifiersName = RegexDescription.Regex.Quantifiers.name
-const reference = RegexDescription.Reference
+const regexReference = RegexDescription.Reference
 const regexDemonstrations = RegexDemonstration.items
+
+const useLanguage = ref('javascript')
+const renderContent = ref('console.log(\'hello world\')')
+const demoReference = ref('')
+const supportLanguages = RegexDemoSupportLanguages
 
 const anchor = (id) => {
     let card = document.getElementById(id)
@@ -208,11 +246,10 @@ watch([regexPattern, sourceString], ([regexPattern_nv, sourceString_nv], [regexP
     if (regexPattern_nv !== regexPattern_ov || sourceString_nv !== sourceString_ov) {
         regex()
     }
-
 })
 
-const redirectTo = () => {
-    RedirectTo(reference)
+const redirectTo = (redirectUrl) => {
+    RedirectTo(redirectUrl)
 }
 
 const previewDescription = (text) => {
@@ -260,6 +297,18 @@ const regexChoose = (val) => {
     regexPattern.value = val.expression
     commonRegexVisiable.value = false
 }
+
+const codeGenerate = () => {
+    const regexCode = RegexCode(useLanguage.value, regexPattern.value, modifiersMap[modifiersIndex.value].key)
+    renderContent.value = regexCode.code
+    demoReference.value = regexCode.demoUrl
+}
+
+const showCodeGeneration = () => {
+    codeGenerate()
+    regexDemoGenerateVisiable.value = true
+}
+
 
 onMounted(() => {
     regex()

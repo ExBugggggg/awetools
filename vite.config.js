@@ -10,9 +10,10 @@ export default defineConfig({
         vue(),
         [
             prismjs({
-                languages: ['js', 'json'],
+                languages: ['js', 'json', 'python', 'java'],
                 css: true,
-                theme: 'default'
+                theme: 'default',
+                plugins: ['line-numbers']
             })
         ]
     ],

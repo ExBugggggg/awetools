@@ -2,13 +2,13 @@
     <el-row :gutter="24">
         <el-col :span="16" :offset="4">
             <el-row :gutter="24" justify="end">
-                <el-button type="primary" @click="formatJSON">Format</el-button>
-                <el-button type="danger" @click="clearContent">Clear Content</el-button>
+                <el-button type="primary" @click.prevent="formatJSON">Format</el-button>
+                <el-button type="danger" @click.prevent="clearContent">Clear Content</el-button>
             </el-row>
             <el-row :gutter="32" style="margin-top: 16px;">
                 <el-col :span="24">
                     <MonacoEditor :language="language" :defaultValue="defaultValue" :editorHeight="60"
-                        ref="monacoFunction"></MonacoEditor>
+                        ref="monacoFunction" @keydown.alt.enter.prevent="formatJSON" @keydown.alt.delete.prevent="clearContent"></MonacoEditor>
                 </el-col>
             </el-row>
         </el-col>

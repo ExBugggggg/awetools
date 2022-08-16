@@ -10,9 +10,10 @@
                 </el-select>
                 <el-button type="primary" style="margin-left: 16px;" @click.prevent="characterConvert">Convert
                 </el-button>
+                <el-button type="success" style="margin-left: 8px;" @click.prevent="switchConvertMode">Switch
+                </el-button>
             </el-row>
         </el-col>
-
     </el-row>
 
     <el-row :gutter="24" style="margin-top: 24px">
@@ -21,7 +22,8 @@
                 <el-col :span="12" style="padding-left: 0px">
                     <el-row>
                         <h4 style="color: #2F4F4F">Source</h4>
-                        <el-input type="textarea" :rows="24" v-model="sourceString" style="margin-top: 16px"></el-input>
+                        <el-input type="textarea" :rows="24" v-model="sourceString" style="margin-top: 16px"
+                            @keydown.alt.enter.prevent="characterConvert"></el-input>
                     </el-row>
                 </el-col>
                 <el-col :span="12">
@@ -49,10 +51,11 @@ import {
 import { ref, onMounted } from 'vue'
 
 const convertOptions = ref([])
-const chooseOption = ref('')
+const chooseOption = ref(0)
 
 const sourceString = ref('')
 const resultString = ref('')
+
 
 const characterConvert = () => {
     if (chooseOption.value === 0) {
@@ -72,6 +75,16 @@ const characterConvert = () => {
     } else if (chooseOption.value === 7) {
         resultString.value = XToChinese(sourceString.value)
     }
+}
+
+const switchConvertMode = () => {
+    if (chooseOption.value % 2 === 0) {
+        chooseOption.value += 1
+    } else {
+        chooseOption.value -= 1
+    }
+    sourceString.value = resultString.value
+    characterConvert()
 }
 
 onMounted(() => {

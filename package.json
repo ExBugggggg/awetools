@@ -10,6 +10,8 @@
     "coverage": "jest --coverage"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.0.6",
+    "clipboard": "^2.0.11",
     "crypto-js": "^4.1.1",
     "element-plus": "^2.2.2",
     "feather-icons": "^4.29.0",
@@ -18,7 +20,6 @@
     "js-sha3": "^0.8.0",
     "marked": "^4.0.18",
     "monaco-editor": "^0.33.0",
-    "prismjs": "^1.28.0",
     "vue": "^3.2.25",
     "vue-router": "^4.0.15"
   },
