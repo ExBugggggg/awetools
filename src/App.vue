@@ -53,8 +53,10 @@
                     </template>
                 </el-dialog>
             </el-main>
-            <el-footer style="padding: 0px">
-
+            <el-footer style="padding: 0px; margin-top: 24vh;">
+                <el-row justify="center">
+                    <el-link href="https://beian.miit.gov.cn">闽ICP备19015962号-1</el-link>
+                </el-row>
             </el-footer>
         </el-container>
     </div>
