@@ -267,7 +267,7 @@ const encrypt = () => {
             ElMessage.error('No choose any encrypt mode or encrypt padding.')
             return
         }
-        var aesEncryptResult = EncryptAES(encryptMessage, secret, config.config)
+        let aesEncryptResult = EncryptAES(encryptMessage, secret, config.config)
         resultString.value = `${aesEncryptResult}\n\nkey:${aesEncryptResult.key}\niv:${aesEncryptResult.iv}\nsalt:${aesEncryptResult.salt}\nciphertext:${aesEncryptResult.ciphertext}`
         break
     case '3DES':
@@ -279,15 +279,15 @@ const encrypt = () => {
             resultString.value = '3DES requires the key length to be 64, 128, 192 or >192.'
             return
         }
-        var tripleDesEncryptResult = EncryptTripleDES(encryptMessage, secret, config.config)
+        let tripleDesEncryptResult = EncryptTripleDES(encryptMessage, secret, config.config)
         resultString.value = `${tripleDesEncryptResult}\n\nkey:${tripleDesEncryptResult.key}\niv:${tripleDesEncryptResult.iv}\nsalt:${tripleDesEncryptResult.salt}\nciphertext:${tripleDesEncryptResult.ciphertext}`
         break
     case 'Rabbit':
-        var rabbitEncryptResult = EncryptRabbit(encryptMessage, secret, {iv: iv})
+        let rabbitEncryptResult = EncryptRabbit(encryptMessage, secret, {iv: iv})
         resultString.value = `${rabbitEncryptResult}\n\nkey:${rabbitEncryptResult.key}\niv:${rabbitEncryptResult.iv}\nsalt:${rabbitEncryptResult.salt}\nciphertext:${rabbitEncryptResult.ciphertext}`
         break
     case 'RC4':
-        var rc4EncryptResult = EncryptRC4(encryptMessage, secret, {iv: iv})
+        let rc4EncryptResult = EncryptRC4(encryptMessage, secret, {iv: iv})
         resultString.value = `${rc4EncryptResult}\n\nkey:${rc4EncryptResult.key}\niv:${rc4EncryptResult.iv}\nsalt:${rc4EncryptResult.salt}\nciphertext:${rc4EncryptResult.ciphertext}`
         break
     default:
